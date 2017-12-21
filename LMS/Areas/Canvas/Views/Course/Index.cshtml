@@ -1,0 +1,135 @@
+﻿@model IEnumerable<LMS.Areas.Canvas.Models.CanvasCourseModel>
+
+@{
+    string heading = "Course";
+    ViewBag.Title = heading;
+}
+
+<div class="row page_heading">
+    <div class="pull-left">
+        @heading
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Add New", "Detail", null, new { @class = "btn btn-success" })
+</p>
+@if (Model != null && Model.Any())
+{
+    <table class="panel panel-default dataTable table-hover no-footer table f11 table-striped table-yuk2 toggle-arrow-tiny tablet breakpoint footable-loaded">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Start Date
+                </th>
+                <th>
+                    End Date
+                </th>
+                <th>
+                    Course Provider
+                </th>
+                <th>Course University</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a class="btn btn-success btn-xs" data-toggle="modal" onclick="showModal('#discussionModalContainer', '#discussionModalBodyID','  @item.course_id')"> @item.name </a>
+                </td>
+                <td>
+                    @item.name
+                </td>
+                <td>
+                    @if (item.start_at != null)
+                    {
+                        @Html.Raw(Convert.ToDateTime(item.start_at).ToString(Constants.DATE_FORMAT));
+                    }
+                </td>
+                <td>
+                    @if (item.end_at != null)
+                    {
+                        @Html.Raw(Convert.ToDateTime(item.end_at).ToString(Constants.DATE_FORMAT));
+                    }
+                </td>
+                <td>
+                    @item.course_provider
+                </td>
+                <td>
+                    @item.course_university
+                </td>
+                <td>
+                    <a class="btn btn-success btn-xs" data-toggle="modal" onclick="showModal('#editModalContainerID', '#editModalBodyID',' @item.course_id')">Course Mapping</a>|
+
+                    @Html.ActionLink("Edit", "Detail", new { id = item.course_id }, new { @class = "btn btn-success btn-xs" }) |
+                    @*<a class="btn btn-danger btn-xs cls-delete-confirm" data-message="Confirm @item.name Delete?" data-href="@Url.Content("~/Cours/delete?id=" + @item.course_id)"> Delete</a>*@
+                    <a class="btn btn-danger btn-xs cls-delete-confirm" data-message="Confirm @item.name Delete?" data-href="@string.Concat(Url.Action("DeleteCourse", "Course"), "/", @item.course_id)"> Delete</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        Record not found...
+    </div>
+}
+<div id="editModalContainerID" class="modal fade" role="dialog" data-url='@Url.Action("CourseMapping", "Course")'>
+    <div id="editModalBodyID"></div>
+</div>
+<div id="discussionModalContainer" class="modal fade" style="margin-top:50px;" role="dialog" data-url='@Url.Action("CourseDicussion", "Cours")'>
+    <div id="discussionModalBodyID">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4>Moodle Discussions</h4>
+
+                </div>
+                <div class="panel-body" style="overflow-y:scroll">
+                    <ul id="discussbody"></ul>
+                </div>
+                <div class="modal-footer">
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showModal(modalContainerId, modalBodyId, id) {
+        console.log(modalContainerId);
+        var url = $(modalContainerId).data('url');
+        console.log(id);
+        $.get(url, { Id: id }, function (data) {
+            console.log(data);
+            if (modalBodyId != '#discussionModalBodyID') {
+                $(modalBodyId).html(data);
+            }
+            else {
+                $('#discussbody').html('');
+                if (data.length == 0) {
+                    return;
+                }
+                for (var i = 0; i < data.length; i++) {
+                    $('#discussbody').append('<li><b>Discussion Topic' + data[i].Question + '</b></li>');
+                    $('#discussbody').append('<li> <ul> <li> Discussion Topic' + data[i].Answer + ' </li></ul></li>');
+
+                }
+
+            }
+            $(modalContainerId).modal('show');
+        });
+    }
+</script>

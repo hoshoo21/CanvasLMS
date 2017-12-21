@@ -1,0 +1,65 @@
+﻿@model IEnumerable<LMS.Models.LMSProvider>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row page_heading">
+    <div class="pull-left">
+        Providers
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Add New", "Create", null, new { @class = "btn btn-success" })
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="panel panel-default dataTable table-hover no-footer table f11 table-striped table-yuk2 toggle-arrow-tiny tablet breakpoint footable-loaded">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Create Date
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProviderName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProviderDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProviderCreateDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "edit", new { id = item.ProviderId }, new { @class = "btn btn-success btn-xs" }) |
+
+                    <a class="btn btn-danger btn-xs cls-delete-confirm" data-message="Confirm @item.ProviderName Delete?" data-href="@Url.Content("~/Providers/delete?id=" + @item.ProviderId)"> Delete</a>
+
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        Record not found...
+    </div>
+}
+

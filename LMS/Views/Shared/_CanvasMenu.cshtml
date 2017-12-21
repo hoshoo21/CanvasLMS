@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="author" content="www.frebsite.nl" />
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=yes" />
+
+    <title>jQuery.mmenu demo</title>
+    <link href="~/Content/CanvasJS/MenuJS/css/demo.css" rel="stylesheet" />    
+    <link href="~/Content/CanvasJS/MenuJS/css/jquery.mmenu.all.css" rel="stylesheet" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.0.js"></script>    
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <link href="~/Content/CanvasJS/MenuJS/css/variables-750d72b9d3e5d522f965bf904110c132.css" rel="stylesheet" />
+    
+    <script src="~/Content/CanvasJS/MenuJS/jquery.mmenu.all.min.js"></script>
+    <script type="text/javascript">
+        CANVAS_ACTIVE_BRAND_VARIABLES = {
+            "ic-brand-primary-darkened-5": "#0087D7",
+            "ic-brand-primary-darkened-10": "#0080CC",
+            "ic-brand-primary-darkened-15": "#0079C1",
+            "ic-brand-primary-lightened-5": "#0C93E3",
+            "ic-brand-primary-lightened-10": "#1999E4",
+            "ic-brand-primary-lightened-15": "#269EE6",
+            "ic-brand-button--primary-bgd-darkened-5": "#0087D7",
+            "ic-brand-button--primary-bgd-darkened-15": "#0079C1",
+            "ic-brand-button--secondary-bgd-darkened-5": "#2B3942",
+            "ic-brand-button--secondary-bgd-darkened-15": "#27333B",
+            "ic-brand-font-color-dark-lightened-15": "#4C5860",
+            "ic-brand-font-color-dark-lightened-30": "#6C757C",
+            "ic-link-color-darkened-10": "#0080CC",
+            "ic-link-color-lightened-10": "#1999E4",
+            "ic-brand-primary": "#008EE2",
+            "ic-brand-font-color-dark": "#2D3B45",
+            "ic-link-color": "#008EE2",
+            "ic-brand-button--primary-bgd": "#008EE2",
+            "ic-brand-button--primary-text": "#ffffff",
+            "ic-brand-button--secondary-bgd": "#2D3B45",
+            "ic-brand-button--secondary-text": "#ffffff",
+            "ic-brand-global-nav-bgd": "#394B58",
+            "ic-brand-global-nav-ic-icon-svg-fill": "#ffffff",
+            "ic-brand-global-nav-ic-icon-svg-fill--active": "#008EE2",
+            "ic-brand-global-nav-menu-item__text-color": "#ffffff",
+            "ic-brand-global-nav-menu-item__text-color--active": "#008EE2",
+            "ic-brand-global-nav-avatar-border": "#ffffff",
+            "ic-brand-global-nav-menu-item__badge-bgd": "#008EE2",
+            "ic-brand-global-nav-menu-item__badge-text": "#ffffff",
+            "ic-brand-global-nav-logo-bgd": "#394B58",
+            "ic-brand-header-image": "/dist/images/canvas_logomark_only@2x-5b9973a671.png",
+            "ic-brand-watermark": "",
+            "ic-brand-watermark-opacity": "1.0",
+            "ic-brand-favicon": "/dist/images/favicon-e10d657a73.ico",
+            "ic-brand-apple-touch-icon": "/dist/images/apple-touch-icon-585e5d997d.png",
+            "ic-brand-msapplication-tile-color": "#008EE2",
+            "ic-brand-msapplication-tile-square": "/dist/images/windows-tile-f2359ad914.png",
+            "ic-brand-msapplication-tile-wide": "/dist/images/windows-tile-wide-52212226d6.png",
+            "ic-brand-right-sidebar-logo": "",
+            "ic-brand-Login-body-bgd-color": "#394B58",
+            "ic-brand-Login-body-bgd-image": "",
+            "ic-brand-Login-body-bgd-shadow-color": "#2D3B45",
+            "ic-brand-Login-logo": "/dist/images/login/canvas-logo-a66b946d8d.svg",
+            "ic-brand-Login-Content-bgd-color": "none",
+            "ic-brand-Login-Content-border-color": "none",
+            "ic-brand-Login-Content-inner-bgd": "none",
+            "ic-brand-Login-Content-inner-border": "none",
+            "ic-brand-Login-Content-inner-body-bgd": "none",
+            "ic-brand-Login-Content-inner-body-border": "none",
+            "ic-brand-Login-Content-label-text-color": "#ffffff",
+            "ic-brand-Login-Content-password-text-color": "#ffffff",
+            "ic-brand-Login-footer-link-color": "#ffffff",
+            "ic-brand-Login-footer-link-color-hover": "#ffffff",
+            "ic-brand-Login-instructure-logo": "#ffffff"
+        };
+
+
+
+			$(function() {
+				$('nav#menu').mmenu();
+			});
+    </script>
+    <script>
+        var rootSite = '@HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")';
+        console.log(rootSite);
+    </script>
+    <style type="text/css">
+       .card {
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            width: 40%;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+
+        .container {
+            padding: 2px 16px;
+        }
+          
+    </style>
+
+
+</head>
+<body data-ng-app="main" class="side_menu_active side_menu_expanded">
+  
+
+    <div id="page">
+        <div class="header">
+            <a href="#menu"></a>
+                User Dashboard
+        </div>
+        <div >
+          @RenderBody()
+
+            </div>
+        <nav id="menu">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#about">Account</a>
+                <li>
+                    <a href="#about">Courses</a>
+                    <ul>
+                        <li>
+                            <a href="#about/history">Algebra 1</a>
+                            <ul>
+                                <li><a href="#about/team/management">Home</a></li>
+                                <li><a href="#about/team/management">Anouncements</a></li>
+                                <li><a href="#about/team/management">Assignments</a></li>
+                                <li><a href="#about/team/management">Quizzes</a></li>
+                                <li><a href="#about/team/management">Grades</a></li>
+                                <li><a href="#about/team/management">Disussions</a></li>
+                                <li><a href="#about/team/management">Grades</a></li>
+                                <li><a href="#about/team/management">People</a></li>
+                                <li><a href="#about/team/management">Pages</a></li>
+                                <li><a href="#about/team/management">OutComes</a></li>
+                                <li><a href="#about/team/management">Syllabus</a></li>
+                                <li><a href="#about/team/management">Files</a></li>
+                                <li><a href="#about/team/management">Settings</a></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#about/team">American Revolution</a>
+                            <ul>
+                                <li><a href="#about/team/management">Home</a></li>
+                                <li><a href="#about/team/management">Anouncements</a></li>
+                                <li><a href="#about/team/management">Assignments</a></li>
+                                <li><a href="#about/team/management">Quizzes</a></li>
+                                <li><a href="#about/team/management">Grades</a></li>
+                                <li><a href="#about/team/management">Disussions</a></li>
+                                <li><a href="#about/team/management">Grades</a></li>
+                                <li><a href="#about/team/management">People</a></li>
+                                <li><a href="#about/team/management">Pages</a></li>
+                                <li><a href="#about/team/management">OutComes</a></li>
+                                <li><a href="#about/team/management">Syllabus</a></li>
+                                <li><a href="#about/team/management">Files</a></li>
+                                <li><a href="#about/team/management">Settings</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#about/team">Critical Thinking</a>
+                            <ul>
+                                <li><a href="#about/team/management">Home</a></li>
+                                <li><a href="#about/team/management">Anouncements</a></li>
+                                <li><a href="#about/team/management">Assignments</a></li>
+                                <li><a href="#about/team/management">Quizzes</a></li>
+                                <li><a href="#about/team/management">Grades</a></li>
+                                <li><a href="#about/team/management">Disussions</a></li>
+                                <li><a href="#about/team/management">Grades</a></li>
+                                <li><a href="#about/team/management">People</a></li>
+                                <li><a href="#about/team/management">Pages</a></li>
+                                <li><a href="#about/team/management">OutComes</a></li>
+                                <li><a href="#about/team/management">Syllabus</a></li>
+                                <li><a href="#about/team/management">Files</a></li>
+                                <li><a href="#about/team/management">Settings</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#about/team">All Courses</a>
+                            
+                        </li>
+                    </ul>
+                </li>
+                <li>
+
+
+                </li>
+                
+            </ul>
+        </nav>
+
+    </div>
+
+
+  
+    
+-
+  
+</body>
+
+</html>

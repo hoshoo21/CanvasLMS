@@ -1,0 +1,341 @@
+﻿@{
+    ViewBag.Title = "Auto Responder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Rules Engines for Automating the Response</h4>
+<form class="form-horizontal">
+    
+    <hr />
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label for="email">Comment Text:</label>
+            <select id="commentText" class="form-control">
+                <option value="2">Discussion</option>
+                <option value="3">FAQ</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4 ">
+            <label for="pwd">Matching Condition</label>
+            <select id="matchingCondition" class="form-control">
+                <option value="1">Contains String </option>
+                <option value="2">Match String </option>
+                <option value="3">Contains Any Word in String </option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="pwd">Text </label>
+            <input type="text" class="form-control" id="matchingText">
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="form-group col-md-4 ">
+
+            <button type="button" id="btnAddcondition" class="btn btn-success">Add New Condition</button>
+
+        </div>
+
+        <div class="form-group col-md-4 ">
+
+            <button type="button" id="btnExecute" class="btn btn-success">Execute Rules Engines</button>
+
+        </div>
+
+   </div>
+    <div class="row">
+        <div class="form-group col-md-10">
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Existing Conditions</h3>
+                   
+                </div>
+                <table class="table"  id="conditions"   >
+                    <thead style="color:white">
+                        <tr  style="color:white">
+                            <th>Text Type</th>
+                            <th>Matching Condition</th>
+                            <th>Matching Text</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    </div>
+    <hr />
+    <div class="row">
+        <div class="form-group col-md-10">
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Possible Anwsers</h3>
+
+                </div>
+                <table class="table answertable" id="possibleanswers">
+                    <thead style="color:white">
+                        <tr style="color:white">
+                            <th></th>                 
+                            <th>Email Subject</th>
+                            <th>Email Body</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+        <div class="row">
+            <h5> Perform This Action </h5>
+            <div class="form-group col-md-12">
+                <label for="pwd">Email Subject </label>
+                <input type="text" class="form-control" id="txtEmailSubject">
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-12">
+                <label for="pwd">Email Body </label>
+                <textarea rows="4" cols="15" class="form-control" id="txtEmailBody"></textarea>
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+            <button type="submit" class="btn btn-default">Submit</button>
+        </div>
+</form>
+<div class="modal fade" id="noanswermodal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">No Answer Found</h4>
+            </div>
+            <div class="modal-body">
+                <p id="infomessage"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<style>
+    .filterable {
+    margin-top: 15px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+
+</style>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/js")
+@*@Scripts.Render("~/bundles/application")*@
+@Scripts.Render("~/bundles/datatable")
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    var saveUrl = "Responder/SaveRules";
+    var getUrl = "Responder/GetRules";
+
+    var rulesids = [];
+    $(document).ready(function () {
+
+       
+
+        $('#btnExecute').on('click', function () {
+            getPossibbleAnswers();
+        });
+        $('#btnAddcondition').on('click',function(){
+            
+            var ajaxdata = {
+                TextType: $('#commentText option:selected').val(),
+                ConditionType: $('#matchingCondition option:selected').val(),
+                MatchingText: $('#matchingText').val(),
+                QuestionId: null,
+                id: null
+            };
+            console.log(ajaxdata)
+            $.ajax({
+                url: saveUrl,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data:ajaxdata,
+                success: function(msg){
+                    console.log(msg);
+                    rulesids.push(ajaxdata);
+                    console.log(rulesids);
+                    AddToTable();
+                },
+                error: function () {
+
+                }
+                
+            });
+
+            
+        })
+
+        //getRespondingRules();
+    });
+    function AddToTable()
+    {
+        var datarow = '<tr><td>' + $('#commentText option:selected').text() + '</td><td>' + $('#matchingCondition option:selected').text() + '</td><td>' + $('#matchingText').val() + '</td></tr>';
+
+        $('#conditions tbody').append(datarow);
+    }
+    function getRespondingRules() {
+        $.ajax({
+            url: getUrl,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                console.log(msg)
+
+                for (var i = 0; i < msg.length; i++) {
+                    var comnttxt = $('#commentText option[value="' + msg[i].TextType + '"').text();
+                    var matchcond = $('#matchingCondition option[value="' + msg[i].ConditionType + '"').text()
+
+                    var datarow = '<tr><td>' + comnttxt + '</td><td>' + matchcond + '</td><td>' + msg[i].MatchingText + '</td></tr>';
+
+                    $('#conditions tbody').append(datarow);
+                
+                }
+                
+            },
+            error: function () {
+
+            }
+
+        });
+    }
+
+    function getPossibbleAnswers() {
+        var infomes = 'No Answer found regarding this question, moving to Unaswered FAQ Section';
+
+        var questiontype = $('#commentText option:selected').val();
+        console.log(questiontype);
+        var getUrl = "Responder/FaqAnswers";
+        var saveURL = "Responder/SaveUnasweredFaq";
+        if (questiontype == 2) {
+            getUrl = "Responder/DiscussionAnswers";
+            infomes = 'No Answer found regarding this question, moving to Unaswered Disucssion Section';
+        }
+        $.ajax({
+            url: getUrl,
+            contentType: "application/json; charset=utf-8",
+            type: 'POST',
+            traditional: true,
+            data:JSON.stringify( { objRules: rulesids }),
+            success: function (msg) {
+                console.log(msg);
+                $('#possibleanswers tbody').empty();
+                if (msg.length == 0) {
+                    $('#noanswermodal').modal('show');
+                    $('#infomessage').html(infomes);
+                    if (questiontype == 2) {
+                        saveunAnsweredDiscussion();
+                    }
+                    else {
+                        saveunAnsweredQuestion();
+                    }
+                }
+                for (var i = 0; i < msg.length; i++) {
+                    var datarow = '<tr><td><input type="checkbox" onclick="populateEmailMessage(this);" id="' + msg[i].EmailId + '"></td><td>' + msg[i].EmailSubject + "</td><td>" + msg[i].EmailBody +'</td></tr>';
+                    $('#possibleanswers tbody').append(datarow);
+                }
+
+            },
+            error: function () {
+
+            }
+
+        });
+    
+    }
+    function populateEmailMessage(obj) {
+        console.log("coming here");
+        var $row = $(obj).closest("tr"),       
+         $tds = $row.find("td");             
+        console.log($row);
+        var emaildetails=[];
+        $.each($tds, function () {           
+            emaildetails.push($(this).text());        
+        });
+        console.log(emaildetails)
+        $('#txtEmailSubject').val("Re: "+ $('#matchingText').val());
+        $('#txtEmailBody').val(emaildetails[2]);
+
+    }
+
+    function saveunAnsweredQuestion() {
+        var url = "Responder/SaveUnasweredFaq";
+        var ajaxdata = { Question: $('#matchingText').val() };
+            
+        
+        console.log(ajaxdata)
+        $.ajax({
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: ajaxdata,
+            success: function (msg) {
+
+            },
+            error: function () {
+
+            }
+        });
+    }
+    function saveunAnsweredDiscussion() {
+        var url = "Responder/SaveUnasweredDiscussions";
+        var ajaxdata = { Question: $('#matchingText').val() };
+
+
+        console.log(ajaxdata)
+        $.ajax({
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: ajaxdata,
+            success: function (msg) {
+
+            },
+            error: function () {
+
+            }
+        });
+
+    }
+</script>

@@ -1,0 +1,35 @@
+﻿@model LMS.Models.University
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>University</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UniversityName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UniversityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UniversityDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UniversityDescription)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.UniversityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

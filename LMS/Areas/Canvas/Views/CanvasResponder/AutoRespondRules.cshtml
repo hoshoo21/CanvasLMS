@@ -1,0 +1,133 @@
+﻿@using LMS.Models
+
+<style type="text/css">
+    .rule-list a + a
+    {
+        padding-left: 8px;
+        border-left: solid 1px black;
+    }
+
+    .rule-list a
+    {
+        padding-right: 8px;
+    }
+</style>
+
+@model List<CanvasRespondRule>
+@{
+    ViewBag.Title = "Auto Respond Rule(s)";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model != null)
+{
+    <form>
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-8 text-right">
+                @Html.ActionLink("Add New Rule", "RuleDetails", "CanvasResponder", new { Area = "Canvas" }, new { @class = "btn btn-success" })
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-8 table-responsive" style="max-height: 400px;">
+                <table class="rule-list table table-responsive table-condensed table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">Title</th>
+                            <th style="width: 20%; text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    @if (Model.Count > 0)
+                    {
+                        foreach (CanvasRespondRule aRule in Model)
+                        {
+                            <tr data-rule-id="@aRule.CanvasRuleId">
+                                <td>
+                                    <a href="@Url.Action("RuleDetails", "CanvasResponder", new { Area = "Canvas", id = aRule.CanvasRuleId })"                                       
+                                       class="canvas-answer-title">
+                                        @aRule.CanvasRuleTitle
+                                    </a>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="@Url.Action("RuleDetails", "CanvasResponder", new { Area = "Canvas", id = aRule.CanvasRuleId })">
+                                        Edit
+                                    </a>
+                                    <a href="@Url.Action("DeleteRule", "CanvasResponder", new { Area = "Canvas", id = aRule.CanvasRuleId })"
+                                       class="delete-canvas-rule">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2" style="text-align: center">No Rules(s) Found</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+        
+    </form>
+}
+
+<script src="@Url.Content("~/Scripts/jquery-1.10.2.js")"></script>
+<script language="javascript">
+    $(document).ready(function () {
+        $('.delete-canvas-rule').each(function (index, btn) {
+            $(btn).click(function (e) {
+                var tr = $(btn).parents('tr[data-rule-id]:first');
+                var text = $(tr).find('.canvas-answer-title').text().trim();
+                if (confirm('Are you sure you want to delete ' + text + ' rule?'))
+                {
+                    var ruleId = $(tr).data('rule-id');
+                    var token = $(btn).parents('form:first').find('input[name="__RequestVerificationToken"]').val();
+                    var data = {
+                        __RequestVerificationToken: token
+                        , ruleId: ruleId
+                    }
+                    var options = {
+                        data: data
+                        , url: '@Url.Action("DeleteRule", "CanvasResponder", new { Area = "Canvas" })'
+                        , async: false
+                        , type: 'POST'
+                    };
+                    $.ajax(options)
+                        .success(function (data) {
+                            if(data.Success)
+                            {
+                                var tr = $(btn).parents('tr[data-rule-id]:first');
+                                if(tr != null && tr.length > 0)
+                                {
+                                    $(tr).remove();
+                                    checkIfNoRule();
+                                }
+                            }
+                        })
+                        .error(function (data) {
+
+                        })
+                }
+                return false;
+            });
+        });
+    })
+    function checkIfNoRule()
+    {
+        var trCount = $('.rule-list').find('tr').not('thead tr').length;
+        if(trCount <= 0)
+        {
+            var thCount = $('.rule-list').find('thead tr th').length;
+            var tr = $('<tr/>').appendTo('.rule-list');
+            var emptyTd = $('<td/>')
+                .attr('colspan', thCount)
+                .css({ 'text-align': 'center' })
+                .html('No Rules(s) Found')
+            $(tr).append(emptyTd);
+        }
+    }
+</script>

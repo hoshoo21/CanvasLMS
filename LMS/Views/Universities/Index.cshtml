@@ -1,0 +1,54 @@
+﻿@model IEnumerable<LMS.Models.University>
+
+@{
+    string heading = "University";
+    ViewBag.Title = heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row page_heading">
+    <div class="pull-left">
+        @heading
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Add New", "Create", null, new { @class = "btn btn-success" })
+</p>
+@if (Model != null && Model.Any())
+{
+    <table class="panel panel-default dataTable table-hover no-footer table f11 table-striped table-yuk2 toggle-arrow-tiny tablet breakpoint footable-loaded">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UniversityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UniversityDescription)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "create", new { id = item.UniversityId }, new { @class = "btn btn-success btn-xs" }) |
+                    <a class="btn btn-danger btn-xs cls-delete-confirm" data-message="Confirm @item.UniversityName Delete?" data-href="@Url.Content("~/Universities/delete?id=" + @item.UniversityId)"> Delete</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <div class="alert alert-danger">
+        Record not found...
+    </div>
+}
+

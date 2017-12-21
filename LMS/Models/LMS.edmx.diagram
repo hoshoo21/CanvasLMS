@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="de7a29050e374d4fbf605c7cd048754a" Name="Diagram1">
+        <EntityTypeShape EntityType="LMS.Models.AutoResponderEmail" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.AutoRespondingRule" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.CourseProvider" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.Cours" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.CourseSchedule" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.CourseUniversity" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.CourseUniversityLM" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.DiscussionDetail" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.DisucssionMaster" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.EmailRule" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.FAQ" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.KnowFaq" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.KnownDiscussion" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.LMSProvider" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.PendingReply" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.Question" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.StudentRegistration" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.Student" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.SubDiscussionDetail" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.SubDiscussionForumReply" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.SubDiscussionReply" Width="1.5" PointX="10.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.SubKnowDiscussion" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.University" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="LMS.Models.CanvasRespondRuleQuestion" Width="1.5" PointX="0.75" PointY="12.75" />
+        <EntityTypeShape EntityType="LMS.Models.FAQEmail" Width="1.5" PointX="5.375" PointY="12.75" />
+        <EntityTypeShape EntityType="LMS.Models.FAQEmailsDownload" Width="1.5" PointX="7.375" PointY="12.75" />
+        <EntityTypeShape EntityType="LMS.Models.SmtpPopSetting" Width="1.5" PointX="13.375" PointY="3.75" />
+        <EntityTypeShape EntityType="LMS.Models.AnsweredFAQ" Width="1.5" PointX="13.375" PointY="7.75" />
+        <EntityTypeShape EntityType="LMS.Models.UnAnsweredFAQ" Width="1.5" PointX="9.375" PointY="13.75" />
+        <EntityTypeShape EntityType="LMS.Models.CanvasRespondRule" Width="1.5" PointX="13.375" PointY="10.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,36 @@
+[12/02/2017 05:16:43] : Canvas scheduler started.
+[12/02/2017 05:16:43] : Getting Courses...
+[12/02/2017 05:16:45] : 2 courses found.
+[12/02/2017 05:16:45] : Getting discussions for subject English.
+[12/02/2017 05:16:45] : Getting discussions for subject Mathematics.
+[12/02/2017 05:16:46] : 1 discussion(s) found against course English.
+[12/02/2017 05:16:46] : 1 discussion(s) found against course Mathematics.
+[12/02/2017 05:16:46] : Canvas auto reponsder cycle completed at 12/02/2017 05:16:46.
+[12/02/2017 05:16:46] : Canvas auto reponsder shall be recalled at 12/2/2017 5:17:02 PM
+[12/02/2017 05:17:01] : Canvas scheduler started.
+[12/02/2017 05:17:01] : Getting Courses...
+[12/02/2017 05:17:02] : 2 courses found.
+[12/02/2017 05:17:02] : Getting discussions for subject English.
+[12/02/2017 05:17:02] : Getting discussions for subject Mathematics.
+[12/02/2017 05:17:02] : 1 discussion(s) found against course Mathematics.
+[12/02/2017 05:17:02] : 1 discussion(s) found against course English.
+[12/02/2017 05:17:02] : Canvas auto reponsder cycle completed at 12/02/2017 05:17:02.
+[12/02/2017 05:17:02] : Canvas auto reponsder shall be recalled at 12/2/2017 5:17:18 PM
+[12/02/2017 05:17:17] : Canvas scheduler started.
+[12/02/2017 05:17:17] : Getting Courses...
+[12/02/2017 05:17:18] : 2 courses found.
+[12/02/2017 05:17:18] : Getting discussions for subject English.
+[12/02/2017 05:17:18] : Getting discussions for subject Mathematics.
+[12/02/2017 05:17:19] : 1 discussion(s) found against course English.
+[12/02/2017 05:17:19] : 1 discussion(s) found against course Mathematics.
+[12/02/2017 05:17:19] : Canvas auto reponsder cycle completed at 12/02/2017 05:17:19.
+[12/02/2017 05:17:19] : Canvas auto reponsder shall be recalled at 12/2/2017 5:17:35 PM
+[12/02/2017 05:17:34] : Canvas scheduler started.
+[12/02/2017 05:17:34] : Getting Courses...
+[12/02/2017 05:17:34] : 2 courses found.
+[12/02/2017 05:17:34] : Getting discussions for subject English.
+[12/02/2017 05:17:34] : Getting discussions for subject Mathematics.
+[12/02/2017 05:17:35] : 1 discussion(s) found against course English.
+[12/02/2017 05:17:35] : 1 discussion(s) found against course Mathematics.
+[12/02/2017 05:17:35] : Canvas auto reponsder cycle completed at 12/02/2017 05:17:35.
+[12/02/2017 05:17:35] : Canvas auto reponsder shall be recalled at 12/2/2017 5:17:51 PM

@@ -1,0 +1,59 @@
+﻿@model LMS.Models.LMSProvider
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LMSProvider</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProviderName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProviderName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProviderDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProviderDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProviderCreateDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProviderCreateDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updatedby)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updatedby)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProviderId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

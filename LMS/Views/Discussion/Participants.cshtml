@@ -1,0 +1,365 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form class="form-horizontal">
+    <div class="row page_heading">
+        <div class="pull-left">
+            Participant Wise Discussions
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <select id="ddlStudent" class="form-control"></select>
+
+        </div>
+        <div class="col-md-6">
+            <select id="ddlcourse" class="form-control"></select>
+
+        </div>
+
+    </div>   
+     <div class="row">
+            <div class="col-md-12">
+                <div class="table">
+                    <table class="panel panel-default dataTable table-hover no-footer table f11 table-striped table-yuk2 toggle-arrow-tiny tablet breakpoint footable-loaded">
+                        <thead>
+                        <th> Discussion </th>
+                        <th> Started By  </th>
+                        <th> Replies </th>
+                        <th> Last Post  </th>
+                        <th></th>
+
+                        <tbody id="maincontents"></tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+        
+    <div class="row">
+
+        </div>
+    
+</form>
+<div id="discussionModalContainer" class="modal fade" style="margin-top:50px;" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Discussion Topic</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="Postinfo" class="form-group col-md-12">
+
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="form-control">  Response for the the Post  </label>
+                        <br />
+                        <textarea cols="40" rows="4" id="responseContent" class="form-control"></textarea>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+
+                        <button type="button" class="btn btn-default btn-sm" onclick="PostResponse();">Post Respnse</button>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/js")
+        @*@Scripts.Render("~/bundles/application")*@
+        @Scripts.Render("~/bundles/datatable")
+        @Scripts.Render("~/bundles/jqueryval")
+
+        @*<link href="~/style/all.css" rel="stylesheet" />*@
+
+
+
+
+        <script>
+
+            $(document).ready(function () {
+                getCourses();
+
+                $("#ddlStudent").change(function () {
+                    getContents();
+
+                });
+                $("#ddlcourse").change(function () {
+                    getDiscussions($("#ddlcourse").val());
+
+                });
+            });
+            function checkAndAdd(name) {
+                var id = participants.length + 1;
+                var found = participants.some(function (el) {
+                    return el.name === name;
+                });
+                if (!found) { participants.push({ id: id, name: name }); }
+            }
+            function checkAndAddCourseName(coursename, courseId) {
+                var id = courseId;
+                var found = courses.some(function (el) {
+                    return el.coursename === coursename;
+                });
+                if (!found) { courses.push({ id: courseId, coursename: coursename }); }
+            }
+            var participants = [];
+            var courses = [];
+
+
+            function getContents() {
+
+                console.log($('#ddlStudent').val());
+                console.log($('#ddlcourse').val());
+                var url = rootSite + 'Discussion/GetDiscussionContents';
+                url = encodeURI(url);
+                console.log(url);
+                var request = $.ajax({
+                    url: url,
+                    type: "GET",
+                    //53A20FA4-BE2B-4BB9-A2CA-3C7E61A0BC3D
+                    data: { DiscussionId: parseInt($('#ddlStudent').val()), CourseId: $('#ddlcourse').val() }
+                    //data: { DiscussionId: parseInt($('#ddlStudent').val()), CourseId: '53A20FA4-BE2B-4BB9-A2CA-3C7E61A0BC3D'}
+
+                });
+
+                request.done(function (msg) {
+                    //        msg = JSON.parse(msg);
+                    console.log(msg);
+                    $('#maincontents').empty();
+                    for (var i = 0; i < msg.length; i++) {
+                        var rowdata = '<tr><td>';
+                        rowdata += msg[i].SubTopic + '</td>';
+                        rowdata += '<td>';
+                        rowdata += msg[i].Originator + '</td>';
+                        rowdata += '<td>';
+                        rowdata += msg[i].NumerOfReplies + '</td>';
+                        rowdata += '<td>';
+                        rowdata += msg[i].LastPostedBy + '</td>';
+                        rowdata += '<td>';
+                        rowdata += '<button type="button" class="btn btn-default" onclick =showModal("' + msg[i].DiscussionId + '","' + msg[i].Id + '"); > View Topic Details' + '</button></td> </tr>';
+                        $('#maincontents').append(rowdata);
+                        rowdata = '';
+
+
+                    }
+
+
+
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    //alert("Request failed: " + textStatus);
+                });
+            }
+
+            function getDiscussions(courseId) {
+                var url = rootSite + 'Discussion/GetDiscussion';
+                url = encodeURI(url);
+                console.log(url);
+                var request = $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: { CourseId: courseId }
+
+                });
+
+                request.done(function (msg) {
+                    console.log(msg);
+                    $('#ddlStudent').empty();
+                    for (var i = 0; i < msg.length; i++) {
+                        $('#ddlStudent').append('<option value="' + msg[i].id + '">' + msg[i].Question + '</option>');
+                    }
+
+                    //getContents();
+                    //    checkAndAddCourseName(msg[i].CourseName, msg[i].CourseId);
+                    //if (!containsObject(objParticipant, objParticipant)) {
+                    //    participants.push(objParticipant);
+
+                    //}
+
+
+
+
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    //alert("Request failed: " + textStatus);
+                });
+            }
+
+            function getCourses() {
+                var url = rootSite + 'Discussion/GetCourses';
+                url = encodeURI(url);
+                console.log(url);
+                var request = $.ajax({
+                    url: url,
+                    type: "GET",
+
+
+                });
+
+                request.done(function (msg) {
+                    console.log(msg)
+                    for (var i = 0; i < msg.length; i++) {
+                        checkAndAddCourseName(msg[i].CourseName, msg[i].CourseId);
+
+                        var course = courses[i];
+                        try {
+                            $('#ddlcourse').append('<option value="' + course.id + '">' + course.coursename + '</option>');
+                        }
+                        catch (ex)
+                        {
+                            var a = 1;
+                        }
+
+                    }
+                    getDiscussions(msg[0].CourseId);
+                    //if (!containsObject(objParticipant, objParticipant)) {
+                    //    participants.push(objParticipant);
+
+                    //}
+
+
+
+
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    //alert("Request failed: " + textStatus);
+                });
+            }
+
+            function getContentsbyId(courseId) {
+                var url = 'Discussion/GetParticipantsContentsbyCourse/' + courseId;
+                url = encodeURI(url);
+                var request = $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: { CourseId: courseId }
+
+                });
+
+                request.done(function (msg) {
+                    //        msg = JSON.parse(msg);
+                    console.log(msg);
+                    $('#maincontents').empty();
+                    for (var i = 0; i < msg.length; i++) {
+                        var rowdata = '<tr><td>';
+                        rowdata += msg[i].ParticipantName + '</td>';
+                        rowdata += '<td>';
+                        rowdata += msg[i].CourseName + '</td>';
+                        rowdata += '<td>';
+                        rowdata += msg[i].Discussion + '</td>';
+                        rowdata += '<td>';
+                        rowdata += msg[i].SubTopic + '</td>';
+                        rowdata += '<td>';
+                        rowdata += '<button type="button" class="btn btn-default" onclick =showModal("' + msg[i].DiscussionId + '"); > View Topic Details' + '</button></td> </tr>';
+
+                        console.log(rowdata);
+                        $('#maincontents').append(rowdata);
+                        rowdata = '';
+
+                        var objParticipant = {};
+                        objParticipant.name = msg[i].ParticipantName;
+                        // console.log(!containsObject(objParticipant, objParticipant));
+                        checkAndAdd(msg[i].ParticipantName);
+                        checkAndAddCourseName(msg[i].CourseName, msg[i].CourseId);
+                        //if (!containsObject(objParticipant, objParticipant)) {
+                        //    participants.push(objParticipant);
+
+                        //}
+                    }
+
+
+
+
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    //alert("Request failed: " + textStatus);
+                });
+            }
+
+            var globaldiscussiondi = '';
+            function showModal(DiscussionId, SubKnowDiscussid) {
+
+                globaldiscussiondi = SubKnowDiscussid;
+                var url = 'ViewTopic';
+                url = encodeURI(url);
+                var request = $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: { DiscussionId: DiscussionId, SubknownDisucssionId: SubKnowDiscussid }
+
+                });
+
+                request.done(function (msg) {
+                    console.log(msg);
+
+                    $('#Postinfo').html('');
+                    $('#Postinfo').html(msg[0].DiscussionDetails);
+
+                    var max_length = 500;
+
+
+
+                    for (var i = 1; i < msg.length; i++) {
+                        $('#Postinfo').append(msg[i].DiscussionDetails);
+                    }
+
+
+                    $('#discussionModalContainer').modal('show');
+
+
+
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    //alert("Request failed: " + textStatus);
+                });
+
+            }
+
+            function PostResponse() {
+                console.log(globaldiscussiondi);
+                console.log($('#responseContent').val());
+                var url = 'PostResponseCotents';
+                url = encodeURI(url);
+                var request = $.ajax({
+                    url: url,
+                    type: "GET",
+                    data: { SubDisccussId: globaldiscussiondi, ResponseContents: $('#responseContent').val() }
+                   
+                });
+
+                request.done(function (msg) {
+                    console.log(msg);
+
+                    $('#discussionModalContainer').modal('hide');
+
+
+                });
+
+                request.fail(function (jqXHR, textStatus) {
+                    //alert("Request failed: " + textStatus);
+                });
+
+            }
+
+        </script>

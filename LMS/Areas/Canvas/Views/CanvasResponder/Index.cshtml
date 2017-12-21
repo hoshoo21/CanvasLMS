@@ -1,0 +1,143 @@
+﻿@model LMS.Areas.Canvas.Models.CanvasAutoResponderModel
+@{
+    ViewBag.Title = "Auto Responder Settings";
+}
+
+<h4>Rules Engines for Automating the Response</h4>
+<form class="form-horizontal1">
+    @Html.AntiForgeryToken()
+    <hr />
+    <div class="row">
+        <div class="form-group col-md-3">
+            @Html.LabelFor(m => m.RuleFor) :
+            @Html.DropDownListFor(m => m.RuleFor, Model.RuleTypes, new { @class="form-control" })
+            @Html.ValidationMessageFor(m => m.RuleFor)
+        </div>
+        <div class="form-group col-md-3 ">
+            @Html.LabelFor(m => m.MatchType) :
+            @Html.DropDownListFor(m => m.MatchType, Model.ConditionTypes, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MatchType)
+        </div>
+        <div class="form-group col-md-3">
+            @Html.LabelFor(m => m.Question) :
+            @Html.TextBoxFor(m => m.Question, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Question)
+        </div>
+        <div class="form-group col-md-3 " style="margin-top: 20px;">
+            <button type="button" id="btnAddcondition" class="btn btn-success">Add To Condition(s)</button>
+        </div>
+    </div>
+    <div class="row" style="display:none; visibility: hidden;">
+
+        <div class="form-group col-md-4 ">
+            <button type="button" id="btnExecute" class="btn btn-success">Execute Rules Engines</button>
+        </div>
+    </div>
+    <hr />
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-4 form-group">
+            @Html.LabelFor(m => m.Answer) :
+            @Html.TextBoxFor(m => m.Answer, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Answer)
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-10">
+            <div class="panel panel-primary filterable">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Existing Conditions</h3>
+
+                </div>
+                <table class="table" id="conditions">
+                    <thead style="color:white">
+                        <tr style="color:white">
+                            <th>@Html.DisplayNameFor(m => m.RuleFor)</th>
+                            <th>@Html.DisplayNameFor(m => m.MatchType)</th>
+                            <th>@Html.DisplayNameFor(m => m.Question)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="submit" value="Submit" class="btn btn-success save-rule" />
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script language="javascript" type="text/javascript">
+        $(function () {
+            bindAddCondition();
+        })
+        function bindAddCondition() {
+            $('#btnAddcondition').click(function () {
+                var drpRuleFor = $('#@Html.IdFor(m => m.RuleFor)');
+                var drpMatchingCondition = $('#@Html.IdFor(m => m.MatchType)');
+                var txtQuestion = $('#@Html.IdFor(m => m.Question)');
+                if ($(drpRuleFor).valid() && $(drpMatchingCondition).valid() && $(txtQuestion).valid())
+                {
+                    var tbl = $('#conditions');
+                    var tr = $('<tr/>').attr('data-new-rule', 'true').appendTo(tbl);
+                    $(tr).attr('data-rule-for', $(drpRuleFor).find(":selected").val())
+                    $(tr).attr('data-condition-type', $(drpMatchingCondition).find(":selected").val())
+
+                    $(tr).append($('<td/>').html($(drpRuleFor).find(":selected").text()));
+                    $(tr).append($('<td/>').html($(drpMatchingCondition).find(":selected").text()));
+                    $(tr).append($('<td/>').addClass('canvas-question').text($(txtQuestion).val()));
+
+                    $(drpRuleFor).prop('disabled', 'disabled');
+                    $($(drpMatchingCondition).val($(drpMatchingCondition).find('option:first').val()));
+                    $(txtQuestion).val('');
+                }
+                return false
+            })
+        }
+        $('.save-rule').click(function () {
+            if ($('#@Html.IdFor(m => m.Answer)').valid())
+            {
+                var tbl = $('#conditions');
+                var newRules = $(tbl).find('[data-new-rule="true"]');
+                if (newRules.length <= 0) {
+                    alert('Atleast 1 rule is required to save.')
+                    return false;
+                }
+                var model = {
+                    Answer: $('#@Html.IdFor(m => m.Answer)').val()
+                    , RuleForId: $('#@Html.IdFor(m => m.RuleFor)').val()
+                    , AnsweringRules: []
+                }
+                $(newRules).each(function (index, row) {
+                    var aRule = {
+                        RuleFor: $(row).data('rule-for')
+                        , MatchType: $(row).data('condition-type')
+                        , Question: $(row).find('td.canvas-question').text()
+                    };
+                    model.AnsweringRules.push(aRule);
+                })
+                var token = $(this).parents('form:first').find('input[name="__RequestVerificationToken"]').val();
+                var options = {
+                    url: '@Url.Action("SaveCanvasRules", "CanvasResponder", new { Area = "Canvas" })'
+                    , type: 'POST'
+                    , async: false
+                    , data: {
+                        __RequestVerificationToken: token
+                        , model : model
+                    }
+                }
+                $.ajax(options)
+                    .success(function (data) {
+                        var a = 1;
+                        if (data.Success == true)
+                        {
+                            window.location.href = '@Url.Action("Index", "Canvas", new { Area = "Canvas" })'
+                        }
+                    })
+            }
+
+            return false;
+        })
+    </script>
+</form>

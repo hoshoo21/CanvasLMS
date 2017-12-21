@@ -1,0 +1,71 @@
+﻿@using LMS.Models
+@model List<UnAnsweredFAQ>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h4>UnAnswered FAQ</h4></div>
+    <div class="panel-body">
+        @if (Model != null)
+        {
+            <ul>
+                @foreach (var aFAQ in Model)
+                {
+                    <li>
+                        <a href="javascript:void()" class="unanswered-faq" data-faq-id="@aFAQ.unanswered_faq_id">@aFAQ.faq</a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+
+</div>
+
+<div class="modal fade dlg-unanswered-faq" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Unaswered FAQ</h4>
+            </div>
+            <div class="modal-body col-md-12">
+                <p id="questionconent"></p>
+                <textarea id="faqResponse" cols="75" rows="15"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="UpdateFaqResponse();">Save Draft and Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Script(
+    @@<script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            //alert('Hey');
+            $('.unanswered-faq').each(function (index, lnk) {
+                $(lnk).click(function (e) {
+                    var dlg = $('.dlg-unanswered-faq');
+                    $(dlg).attr('data-faq-id', $(lnk).data('faq-id'));
+                    $(dlg).find('#questionconent').html($(lnk).text());
+                    $(dlg).modal('show');
+                    return false;
+                })
+            })
+        })
+        function UpdateFaqResponse() {
+            var dlg = $('.dlg-unanswered-faq');
+            var data = {
+                unanswered_faq_id: $(dlg).data('faq-id')
+                , faq_answer: $(dlg).find('#faqResponse').val()
+            };
+            var options = {
+                url: '@Url.Action("UpdateUnansweredFAQ", "CanvasDiscussion", new { Area="Canvas" })'
+                , type: 'POST'
+                , async: false
+                , data: data
+            };
+            $.ajax(options)
+                .success(function (data) {
+                    var a = 1
+                    $(dlg).modal('hide')
+                })
+        }
+    </script>)

@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>LMS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Styles.Render("~/Content/matrix/css", "~/Content/matrix/fontawesome"
+    //, "~/Content/bootstrap"
+    //, "~/Content/css"
+    , "~/Content/css"
+    )
+    @Scripts.Render("~/bundles/jquery")
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700,800" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        body {
+            margin: 0px !important;
+        }
+
+        #content h2 {
+            margin: 0px;
+        }
+
+        .content-page {
+            margin-left: 8px;
+        }
+        .footer {
+            position: absolute;
+            background-color: #2E363F;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+        }
+    </style>
+    <script>
+        var rootSite = '@HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")';
+        console.log(rootSite);
+    </script>
+</head>
+<body>
+
+    <!--Header-part-->
+    @*<div id="header">
+            <h1><a href="dashboard.html">LMS</a></h1>
+        </div>*@
+    @Html.Partial("~/Views/PartialViews/_Header.cshtml")
+    <!--close-Header-part-->
+    <!--top-Header-menu-->
+    @Html.Partial("~/Views/PartialViews/_NavigationBar.cshtml")
+    <!--close-top-Header-menu-->
+    <!--start-top-serch-->
+    @Html.Partial("~/Views/PartialViews/_Search.cshtml")
+    <!--close-top-serch-->
+    <!--sidebar-menu-->
+    @Html.Partial("~/Views/PartialViews/_SideBar.cshtml")
+    <!--sidebar-menu-->
+    <!--main-container-part-->
+    <div id="content">
+        <!--breadcrumbs-->
+        @Html.Partial("~/Views/PartialViews/_BreadCrumb.cshtml")
+        <!--End-breadcrumbs-->
+        <div class="container-fluid">
+            <div class="content-page">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <!--end-main-container-part-->
+    <!--Footer-part-->
+    <div class="row-fluid">
+        <div id="footer" class="span12 footer"> @DateTime.Now.Year ©</div>
+    </div>
+    <!--end-Footer-part-->
+    @Scripts.Render("~/Scripts/matrix/js")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/datatable")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @*<script type="text/javascript">
+            // This function is called from the pop-up menus to transfer to
+            // a different page. Ignore if the value returned is a null string:
+            function goPage(newURL) {
+
+                // if url is empty, skip the menu dividers and reset the menu selection to default
+                if (newURL != "") {
+
+                    // if url is "-", it is this page -- reset the menu:
+                    if (newURL == "-") {
+                        resetMenu();
+                    }
+                    // else, send page to designated URL
+                    else {
+                        document.location.href = newURL;
+                    }
+                }
+            }
+
+            // resets the menu selection upon entry to this page:
+            function resetMenu() {
+                document.gomenu.selector.selectedIndex = 2;
+            }
+        </script>*@
+    <ul class="typeahead dropdown-menu"></ul>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+﻿@model IEnumerable<LMS.Models.GetCourse_Result>
+
+@{
+    string heading = "Discussion";
+    ViewBag.Title = heading;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row page_heading">
+    <div class="pull-left">
+        @heading
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>UnAnswered Discussions</h4></div>
+            <div class="panel-body">
+                @if (ViewBag.Discussion != null)
+                {
+                    <ul>
+                        @foreach (var item in ViewBag.Discussion)
+                        {
+                            <li>
+                                @item.DiscussionSubject
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        Record not found...
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>UnAnswered FAQ</h4></div>
+            <div class="panel-body">
+                @if (ViewBag.Faq != null)
+                {
+                    <ul>
+                        @foreach (var item in ViewBag.Faq)
+                        {
+                            <li> <a  onclick="showResponseModal('@item.Question', '@item.FAQId')" >@item.Question </a></li>
+                        }
+                    </ul>
+
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        Record not found...
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div id="editModalContainerID" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Unaswered Question</h4>
+            </div>
+            <div class="modal-body col-md-12">
+                <p id="questionconent">Good Mornig this class is showing up muted for me on  Canvas When does it open? Thank you [Student Name] </p>
+                <textarea id="faqResponse" cols=75" rows="30"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="UpdateFaqResponse();">Save Draft and Close</button>
+            </div>
+            </div>
+    </div>
+</div>  
+
+
+<script>
+    var _faqId;
+
+    function showResponseModal(questionDescription, faqId) {
+        _faqId = faqId;
+        console.log(_faqId);
+        $('#questionconent').html(questionDescription);
+        $('#faqResponse').val('');
+        getFaqResponse();
+        $('#editModalContainerID').modal('show');
+    }
+
+    function getFaqResponse() {
+        var url = 'Discussion/GetFaqResponse';
+
+        var request = $.ajax({
+            url: url,
+            type: "POST",
+            data: { FaqId: _faqId }
+
+        });
+
+        request.done(function (msg) {
+            msg = JSON.parse(msg);
+            console.log(msg);
+            $('#faqResponse').val(msg.Answer);
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+
+    function UpdateFaqResponse() {
+        var url = 'Discussion/UpdateFaq';
+
+        var request = $.ajax({
+            url: url,
+            type: "POST",
+            data: { FaqId: _faqId, FaqAnswer: $('#faqResponse').val() }
+            
+        });
+
+        request.done(function (msg) {
+            msg = JSON.parse(msg);
+            console.log(msg);
+            
+            if (msg == 'Question Updated Successfully') {
+                $('#editModalContainerID').modal('hide');
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+
+      
+    }
+</script>

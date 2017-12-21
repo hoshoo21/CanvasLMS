@@ -1,0 +1,21 @@
+﻿@model LMS.Areas.Canvas.Models.CanvasUnansweredModel
+@{
+    ViewBag.Title = "Discussion";
+}
+<div class="row page_heading">
+    <div class="pull-left">
+        @ViewBag.Title
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        @Html.Partial("~/Areas/Canvas/Views/PartialViews/UnAnsweredDiscussions.cshtml")
+    </div>
+    @if (Model.UnAnsweredFAQs != null)
+    {
+        <div class="col-md-6">
+            @Html.Partial("~/Areas/Canvas/Views/PartialViews/UnAnsweredFAQs.cshtml", Model.UnAnsweredFAQs)
+        </div>
+    }
+    
+</div>

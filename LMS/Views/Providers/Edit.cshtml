@@ -1,0 +1,115 @@
+﻿@model LMS.Models.ProviderUniversitiesModel
+
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())  
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>LMSProvider</h4>
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Provider.ProviderName, htmlAttributes: new { @class = "control-label col-md-2" })
+
+            @Html.HiddenFor(model => model.Provider.ProviderId)
+
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Provider.ProviderName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Provider.ProviderName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Provider.ProviderDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Provider.ProviderDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Provider.ProviderDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group hide">
+            @Html.LabelFor(model => model.Provider.ProviderCreateDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Provider.ProviderCreateDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Provider.ProviderCreateDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group hide">
+            @Html.LabelFor(model => model.Provider.CreatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Provider.CreatedBy, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Provider.CreatedBy, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group hide">
+            @Html.LabelFor(model => model.Provider.Updatedby, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Provider.Updatedby, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Provider.Updatedby, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Update" class="btn btn-success" />
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-warning" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                @if (Model.Universities != null && Model.Universities.Any())
+                {
+                    <table class="panel panel-default dataTable table-hover no-footer table f11 table-striped table-yuk2 toggle-arrow-tiny tablet breakpoint footable-loaded">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                            </tr>
+                        </thead>
+
+
+                        @foreach (var item in Model.Universities)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UniversityName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UniversityDescription)
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-danger">
+                        Record not found...
+                    </div>
+                }
+            </div>
+         </div>
+
+ </div>
+}
+
+
+
+

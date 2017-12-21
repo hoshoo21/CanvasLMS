@@ -1,0 +1,42 @@
+﻿@model IEnumerable< LMS.Models.Courses.CourseDetail>
+
+
+<div class="modal-dialog ">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>University And LMS Mapped</h3>
+        </div>
+        <div class="modal-body">
+            <table class="panel panel-default dataTable table-hover no-footer table f11 table-striped table-yuk2 toggle-arrow-tiny tablet breakpoint footable-loaded">
+
+                <thead>
+                <th>UnviersityName</th>
+                <th>Provider</th>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+            {
+
+
+            <tr>
+                <td>
+                    @item.UniversityName
+                </td>
+                <td>
+                    @item.LMSProvider
+                </td>
+
+            </tr>
+
+
+            }
+                    .
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
+</div>

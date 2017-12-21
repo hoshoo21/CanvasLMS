@@ -1,0 +1,284 @@
+﻿@{
+    ViewBag.Title = "Canvas Dashboard";
+    Layout = "~/Views/Shared/_CanvasMenu.cshtml";
+}
+<style>
+    html {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    *, *:before, *:after {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    body {
+        padding: 0 20px 20px 20px;
+        background-color: #eee;
+    }
+
+    .row {
+        padding: 0 0 24px 0;
+        vertical-align: top;
+        border-bottom: 1px solid #ccc;
+    }
+
+    p {
+        max-width: 750px;
+    }
+
+    input[type="text"] {
+        vertical-align: top;
+        font-family: 'Inconsolata', Courier, monospace;
+        font-weight: 700;
+        padding: 4px;
+        height: 30px;
+        margin-right: 8px;
+    }
+
+    .fa-bullhorn, .fa-folder-open-o {
+        color: black;
+    }
+    .row {
+      border-bottom:none
+    
+    }
+</style>
+
+<link href="~/Content/CanvasJS/ColorLibs/palette-color-picker.css" rel="stylesheet" />
+<script src="~/Content/CanvasJS/ColorLibs/palette-color-picker.js"></script>
+
+
+
+
+<script>
+    var templatecard = '<div class="card text-white bg-danger mb-3 mr-3" style="max-width: 18rem;"> ' +
+
+              '<div id="card0"  class="card-body" style="max-height: 50%;">' +
+    '<a href="#" onclick="showColorDiv(this); return false;">' +
+        '<i id="IconSetting0" class="fa fa-ellipsis-v bg-white pull-right settingIcon"></i>' +
+    '</a>' +
+'</div>' +
+'<div  class="card-body bg-white" style="max-height: 50%;">' +
+    '<label id="[coursetitle0]" style="color:red"> Text Color </label>' +
+    '<div class="row">' +
+        '<div class="col-md-3">' +
+    '<a id="" href="#"><i class="fa fa-bullhorn" syle="color:black" aria-hidden="true"></i> </a>' +
+        '</div>' +
+        '<div class="col-md-3">' +
+            '<a id="" href="#"><i class="fa fa-folder-open-o" aria-hidden="true"></i> </a>' +
+           '</div>' +
+           '<div class="col-md-3">' +
+            '<a id="" href="#"><i class="fa fa-comments" aria-hidden="true"></i> </a>' +
+           '</div>' +
+
+           ' </div> </div>    </div>';
+
+    $(document).ready(function () {
+        getAllCourses();
+
+        $('#newCouseModal').on('show.bs.modal', function (event) {
+
+
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            console.log(button);
+            // var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+           //modal.find('.modal-title').text('New message to ' + recipient)
+           // modal.find('.modal-body input').val(recipient)
+        })
+
+    });
+
+
+    function getAllCourses() {
+        var url = rootSite + 'Canvas/GetAllCourses';
+        url = encodeURI(url);
+        console.log(url);
+        var request = $.ajax({
+            url: url,
+            type: "GET",
+
+
+        });
+
+        request.done(function (msg) {
+
+            msg = JSON.parse(msg);
+
+            console.log(msg)
+
+            for (var i = 0; i < msg.length; i++) {
+
+                var updatetemplate = templatecard.replace('[coursetitle0]', 'coursetitle' + i);
+                updatetemplate = updatetemplate.replace('IconSetting0', 'IconSetting' + i);//card0
+                updatetemplate = updatetemplate.replace('card0', 'card' + i);
+                $('#parent').append(updatetemplate);
+                $('#coursetitle' + i).text(msg[i].name);
+
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+
+        });
+
+    }
+
+    var cardpointer = 0;
+    
+
+    function showColorDiv(objsetting) {
+        
+        
+
+        
+        var offsetpos = $(objsetting).find('i').offset();
+        cardpointer = $(objsetting).find('i').attr('id');
+        console.log(cardpointer);
+
+        $("#sample-id-2").css({
+            'position': 'absolute',
+            'background-color': 'white',
+            'left': offsetpos.left-300,
+            'top': offsetpos.top -200,
+            'z-index': 5000
+        }).show("slow").delay(3000);
+
+
+        $('[name="duplicated-name-2"]').paletteColorPicker({
+            onbeforeshow_callback: function (color_picker_button) {
+                console.log('onbeforeshow_callback!!!');
+                console.log($(color_picker_button));
+                console.log(color_picker_button);
+            },
+            onchange_callback: function (clicked_color) {
+                console.log('onchange_callback!!!');
+                console.log($(clicked_color));
+                console.log(clicked_color);
+            }
+        });
+
+    }
+
+    function saveSettings() {
+        cardpointer = cardpointer.replace(/[^0-9]/g, '');
+        $('#coursetitle' + cardpointer).text($('#txtnickname').val()).css('color',$('#duplicated-name-2').val());
+        $('#card' + cardpointer).css("background-color", $('#duplicated-name-2').val());
+        $('#sample-id-2').hide();
+
+
+    }
+    function cancelSettings() {
+        $('#sample-id-2').hide();
+    }
+    
+</script>
+
+
+<div class="card col-md-3" id="sample-id-2" style="display:none">
+    <div class="card-header deep-orange lighten-1 white-text">
+        <label>Nick Name </label>
+        <input id="txtnickname" type="text" class="form-group" />
+    </div>
+    <div class="card-body">
+        <input type="text" name="duplicated-name-2" id="duplicated-name-2" data-palette='["#D50000","#304FFE","#00B8D4","#00C853","#FFD600","#FF6D00","#FF1744","#3D5AFE","#00E5FF","#00E676","#FFEA00","#FF9100","#FF5252","#536DFE","#18FFFF","#69F0AE","#FFFF00","#FFAB40"]' value="" style="margin-right:48px;">
+    </div>
+
+    <div>
+        <div class="form-group">
+            <button value="Accept" class="btn btn-primary" onclick="saveSettings();" > Save </button>
+            <button value="Cancel" class="btn btn-defaultc" onclick="cancelSettings();"> Cancel</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="modal fade" id="newCouseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" onclick="">Start  a New Coure</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Coure Name:</label>
+                        <input type="text" class="form-control" id="txtCourseName">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="form-control-label">Conent License:</label>
+                        <select id="LicenseType" class="form-control">
+                            <option selected value="Public Domain">Public Domain</option>
+                            <option value="Private (Copy Righted)">Private (Copy Righted)</option>
+                            <option value="CC Attribution">CC Attribution</option>
+                            <option value="CC Attribution Share Alike">CC Attribution Share Alike</option>
+                            <option value="CC Attribution Non Commercial">CC Attribution Non Commercial</option>
+                            <option value="CC Attribution Non Commercial Shared Alike">CC Attribution Non Commercial Shared Alike</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Creare Course</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-primary">
+
+                    <div class="panel-body"><h3>DashBoard </h3> <a href="#"><i id="dashBoardSetting" class="fa fa-cog bg-white pull-right"></i>  </a></div>
+                </div>
+            </div>
+            
+        </div>
+
+
+        <div class="row" id="parent">
+
+
+
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">View Grades</button><br />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newCouseModal">Create New Course</button>
+                    
+                </div>
+                
+
+            </div>
+        
+        </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+

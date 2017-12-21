@@ -1,0 +1,227 @@
+﻿@model LMS.Models.DashboardModel
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<div class="row page_heading">
+        <div class="col-md-2 col-sm-4 col-xs-6">
+            Dashboard
+        </div>
+    </div>*@
+<h2>Dashboard</h2>
+
+
+<div class="row">
+    <div class="col-md-6">
+
+        <select id="Courseddl" class="form-control" onchange="javascript:SelectCourse();">
+            <option value="">Select Course</option>
+            @foreach (var item in Model.Courses)
+            {
+                <option value="@item.CourseId">@item.CourseName</option>
+            }
+
+
+        </select>
+
+
+    </div>
+    <div class="col-md-6">
+        <select id="Universityddl" class="form-control" onchange="javascript: SelectUniversity();">
+            <option value="">Select University</option>
+            @foreach (var item in Model.Universities)
+            {
+                <option value="@item.UniversityId">@item.UniversityName</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="row row_full mHeight">
+    <div class="container-fluid">
+        <div class="col-lg-3 col-sm-6">
+            <div class="info_box_var_1 box_bg_a">
+                <div class="info_box_body">
+                    <span class="info_box_icon icon_group"></span>
+                    <span class="count" data-endVal="1342">1342</span>
+                </div>
+                <div class="info_box_footer">
+                    New Students
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="info_box_var_1 box_bg_b">
+                <div class="info_box_body">
+                    <span class="info_box_icon icon_mail_alt"></span>
+                    <span class="count" data-endVal="5712">5712</span>
+                </div>
+                <div class="info_box_footer">
+                    Auto Response Sent (FAQ)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="info_box_var_1 box_bg_c">
+                <div class="info_box_body">
+                    <span class="info_box_icon icon_wallet"></span>
+                    <span class="count" data-endVal="13578">135</span>
+                </div>
+                <div class="info_box_footer">
+                    Auto Response Sent (DQ)
+                    <small></small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="info_box_var_1 box_bg_d">
+                <div class="info_box_body">
+                    <span class="info_box_icon icon_mail_alt"></span>
+                    <span class="count" data-endVal="531">531</span>
+                </div>
+                <div class="info_box_footer">
+                    Sent Messages
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="heading_a">
+            <span class="heading_text">Registrations</span>
+            @*<div class="pull-right">
+                    <button class="btn btn-xs btn-default chart_switch" data-chart="line">Line</button>
+                    <button class="btn btn-xs btn-link chart_switch" data-chart="bar">Bar</button>
+                </div>*@
+        </div>
+        <div id="c3_7_days" style="height:280px; display:none;"></div>
+        <div id="chart" class="c3" style="max-height: 280px; position: relative;">
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/Scripts/d3.js"></script>
+<script type="text/javascript" src="~/Scripts/c3.js"></script>
+<script type="text/javascript">
+
+    var columns = [
+        ['data1', 30, 200, 100, 400, 150, 250],
+        ['data2', 23, 113, 144, 423, 156, 253]
+    ];
+
+    var category = ["University1", "University2", "University3", "University4", "University5", "University6"];
+
+    BindChat(columns, category);
+
+
+
+    function SelectCourse() {
+        //alert();
+        var a = $.ajax({
+            type: "GET",
+            url: "/Home/GetStudentByCourse",
+            data: { CourseID: $('#Courseddl :selected').val() },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+
+                if (response.length > 0) {
+                    var arrY = ['No of Students'];
+                    var arrX = [];
+
+                    for (var i = 0; i < response.length; i++) {
+                        arrY.push(response[i]["NoOfStudent"]);
+                        arrX.push(response[i]["Category"]);
+                    }
+                    columns = [arrY];
+                    category = arrX;
+
+
+                    BindChat(columns, category);
+
+                }
+
+            },
+            failure: function (response) {
+                // alert("failure");//alert(response.responseText);
+            },
+            error: function (response) {
+                //alert("error");
+                // alert(response.responseText);
+            }
+        });
+
+        //columns = [
+
+        //   ['NoOfStudents', 1, 2, 2, 2, 2, 2]
+        //];
+
+        //category = ["Baker University", "Barstow College", "Benedictine University", "Northeastern University ", "University of Virginia", "Upper Iowa University "];
+
+
+
+
+
+    }
+
+    function SelectUniversity() {
+
+
+
+        columns = [
+
+            ['NoOfStudents', 1, 2, 2, 2, 2, 2]
+        ];
+
+        category = ["Baker University", "Barstow College", "Benedictine University", "Northeastern University ", "University of Virginia", "Upper Iowa University "];
+
+        BindChat(columns, category);
+
+    }
+
+    function BindChat(Columns, Category) {
+        var chart = c3.generate({
+            bindto: '#chart',
+            data: {
+
+                columns: Columns
+            },
+            axis: {
+                x: {
+                    type: 'category',
+                    categories: Category
+                }
+            },
+            grid: {
+                x: {
+                    show: true
+                },
+                y: {
+                    show: true
+                }
+            },
+            color: {
+                pattern: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+            }
+        });
+    }
+
+</script>
+<script language="javascript">
+    $('.count').each(function () {
+        $(this).prop('Counter', 0).animate({
+            Counter: $(this).text()
+        }, {
+                duration: 4000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+    });
+</script>
+

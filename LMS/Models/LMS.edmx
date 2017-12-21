@@ -1,0 +1,1142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="LMS.Models.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AnsweredFAQs">
+          <Key>
+            <PropertyRef Name="faq_answered_id" />
+          </Key>
+          <Property Name="faq_answered_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="faq_email_id" Type="int" />
+          <Property Name="faq" Type="text" />
+          <Property Name="answer_date_time" Type="datetime" />
+          <Property Name="answer_replied_with" Type="text" />
+          <Property Name="canvas_rule_id" Type="int" />
+        </EntityType>
+        <EntityType Name="AutoResponderEmail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="EmailSubject" Type="varchar" MaxLength="250" />
+          <Property Name="EmailBody" Type="varchar(max)" />
+          <Property Name="IsDraft" Type="bit" />
+        </EntityType>
+        <EntityType Name="AutoRespondingRules">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TextType" Type="int" />
+          <Property Name="ConditionType" Type="int" />
+          <Property Name="MatchingText" Type="varchar" MaxLength="250" />
+          <Property Name="QuestionId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="CanvasRespondRuleQuestions">
+          <Key>
+            <PropertyRef Name="CanvasQuestionId" />
+          </Key>
+          <Property Name="CanvasQuestionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CanvasRuleId" Type="int" Nullable="false" />
+          <Property Name="MatchType" Type="tinyint" />
+          <Property Name="CanvasQuestion" Type="nvarchar(max)" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <EntityType Name="CanvasRespondRules">
+          <Key>
+            <PropertyRef Name="CanvasRuleId" />
+          </Key>
+          <Property Name="CanvasRuleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CanvasRuleForId" Type="tinyint" />
+          <Property Name="CanvasRuleTitle" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CanvasAnswer" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="UpdatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CourseProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+          <Property Name="ProviderId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="Courses">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CourseName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CourseDescription" Type="varchar(max)" />
+          <Property Name="CourseCreateDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="Updatedby" Type="uniqueidentifier" />
+          <Property Name="CanvasId" Type="int" />
+        </EntityType>
+        <EntityType Name="CourseSchedule">
+          <Key>
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="ScheduleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="CourseUniversity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+          <Property Name="UniversityId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="CourseUniversityLMS">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="UniversityId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CourseId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProviderId" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DiscussionDetail">
+          <Key>
+            <PropertyRef Name="DiscussionDetailId" />
+          </Key>
+          <Property Name="DiscussionDetailId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DiscussionComments" Type="varchar(max)" />
+          <Property Name="DiscussionId" Type="uniqueidentifier" />
+          <Property Name="EnteredBy" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="DisucssionMaster">
+          <Key>
+            <PropertyRef Name="DiscussionId" />
+          </Key>
+          <Property Name="DiscussionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DiscussionSubject" Type="varchar(max)" />
+          <Property Name="DiscussionDetails" Type="varchar(max)" />
+          <Property Name="Createdby" Type="uniqueidentifier" />
+          <Property Name="CreatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="EmailRules">
+          <Key>
+            <PropertyRef Name="RuleId" />
+            <PropertyRef Name="EmailId" />
+          </Key>
+          <Property Name="RuleId" Type="int" Nullable="false" />
+          <Property Name="EmailId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FAQ">
+          <Key>
+            <PropertyRef Name="FAQId" />
+          </Key>
+          <Property Name="FAQId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Question" Type="varchar(max)" />
+          <Property Name="Answer" Type="varchar(max)" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="FAQEmails">
+          <Key>
+            <PropertyRef Name="faq_email_id" />
+          </Key>
+          <Property Name="faq_email_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="smtp_pop_id" Type="int" Nullable="false" />
+          <Property Name="user_name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="use_password" Type="nvarchar" MaxLength="160" Nullable="false" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="FAQEmailsDownload">
+          <Key>
+            <PropertyRef Name="faq_email_download_id" />
+          </Key>
+          <Property Name="faq_email_download_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="faq_email_id" Type="int" Nullable="false" />
+          <Property Name="email_uid" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="download_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="KnowFaqs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Question" Type="varchar(max)" />
+          <Property Name="Answer" Type="varchar(max)" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="KnownDiscussion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Question" Type="varchar(max)" />
+          <Property Name="Answer" Type="varchar(max)" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="LMSProvider">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="ProviderId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProviderName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ProviderDescription" Type="varchar(max)" />
+          <Property Name="ProviderCreateDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="uniqueidentifier" />
+          <Property Name="Updatedby" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="PendingReplies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ResponseContent" Type="varchar(max)" />
+          <Property Name="DiscussionId" Type="uniqueidentifier" />
+          <Property Name="isrepllied" Type="bit" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="QuestionType" Type="int" />
+          <Property Name="QuestionDesc" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="SmtpPopSettings">
+          <Key>
+            <PropertyRef Name="smtp_pop_id" />
+          </Key>
+          <Property Name="smtp_pop_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="setting_name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="smtp_server" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="smpt_port" Type="int" Nullable="false" />
+          <Property Name="smtp_use_ssl" Type="bit" Nullable="false" />
+          <Property Name="pop_server" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="pop_port" Type="int" Nullable="false" />
+          <Property Name="pop_use_ssl" Type="bit" Nullable="false" />
+          <Property Name="active" Type="bit" />
+        </EntityType>
+        <EntityType Name="StudentRegistration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="CourseID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UniversityID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="120" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="120" />
+          <Property Name="RegNo" Type="nvarchar" MaxLength="80" />
+          <Property Name="PhoneNo" Type="numeric" Precision="15" Scale="0" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="SubDiscussionDetails">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SubDiscussionId" Type="uniqueidentifier" />
+          <Property Name="SubDiscussionSubject" Type="nvarchar" MaxLength="500" />
+          <Property Name="SubDiscussionDetail" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="SubDiscussionForumReplies">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DiscussionDetails" Type="nvarchar(max)" />
+          <Property Name="SubKnownDiscussionId" Type="uniqueidentifier" />
+          <Property Name="IsmainPost" Type="bit" />
+        </EntityType>
+        <EntityType Name="SubDiscussionReplies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SubDiscussionDetailId" Type="uniqueidentifier" />
+          <Property Name="ReplyFrom" Type="nvarchar" MaxLength="700" />
+          <Property Name="ReplyContent" Type="nvarchar(max)" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubKnowDiscussions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DiscussionId" Type="int" Nullable="false" />
+          <Property Name="CourseId" Type="uniqueidentifier" />
+          <Property Name="DiscussionURL" Type="varchar" MaxLength="600" />
+          <Property Name="Originator" Type="varchar" MaxLength="500" />
+          <Property Name="IsNewDiscussion" Type="bit" />
+          <Property Name="NumerOfReplies" Type="int" Nullable="false" />
+          <Property Name="LastPostedBy" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsPostReplied" Type="bit" Nullable="false" />
+          <Property Name="SubTopic" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="UnAnsweredFAQs">
+          <Key>
+            <PropertyRef Name="unanswered_faq_id" />
+          </Key>
+          <Property Name="unanswered_faq_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="faq" Type="text" />
+          <Property Name="faq_answer" Type="text" />
+          <Property Name="faq_email_id" Type="int" />
+          <Property Name="to_email_address" Type="nvarchar" MaxLength="1000" />
+          <Property Name="faq_answered_id" Type="int" />
+          <Property Name="faq_email_subject" Type="varchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="University">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+          </Key>
+          <Property Name="UniversityId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UniversityName" Type="varchar" MaxLength="100" />
+          <Property Name="UniversityDescription" Type="varchar(max)" />
+        </EntityType>
+        <Function Name="AddCourse" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CourseName" Type="varchar" Mode="In" />
+          <Parameter Name="CourseDescription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="Createdby" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="Updatedby" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetCourse" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetDiscussion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="isAll" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GetFaq" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="isAll" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GetStudentCourse" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UniversityId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="GetStudentUniversity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CourseId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <EntityContainer Name="LMSModelsStoreContainer">
+          <EntitySet Name="AnsweredFAQs" EntityType="Self.AnsweredFAQs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AutoResponderEmail" EntityType="Self.AutoResponderEmail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AutoRespondingRules" EntityType="Self.AutoRespondingRules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CanvasRespondRuleQuestions" EntityType="Self.CanvasRespondRuleQuestions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CanvasRespondRules" EntityType="Self.CanvasRespondRules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseProvider" EntityType="Self.CourseProvider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseSchedule" EntityType="Self.CourseSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseUniversity" EntityType="Self.CourseUniversity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CourseUniversityLMS" EntityType="Self.CourseUniversityLMS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DiscussionDetail" EntityType="Self.DiscussionDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DisucssionMaster" EntityType="Self.DisucssionMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailRules" EntityType="Self.EmailRules" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAQ" EntityType="Self.FAQ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAQEmails" EntityType="Self.FAQEmails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAQEmailsDownload" EntityType="Self.FAQEmailsDownload" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KnowFaqs" EntityType="Self.KnowFaqs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KnownDiscussion" EntityType="Self.KnownDiscussion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LMSProvider" EntityType="Self.LMSProvider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PendingReplies" EntityType="Self.PendingReplies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SmtpPopSettings" EntityType="Self.SmtpPopSettings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentRegistration" EntityType="Self.StudentRegistration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubDiscussionDetails" EntityType="Self.SubDiscussionDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubDiscussionForumReplies" EntityType="Self.SubDiscussionForumReplies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubDiscussionReplies" EntityType="Self.SubDiscussionReplies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubKnowDiscussions" EntityType="Self.SubKnowDiscussions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UnAnsweredFAQs" EntityType="Self.UnAnsweredFAQs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="University" EntityType="Self.University" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LMS.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AutoResponderEmail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="EmailSubject" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="EmailBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDraft" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="AutoRespondingRule">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TextType" Type="Int32" />
+          <Property Name="ConditionType" Type="Int32" />
+          <Property Name="MatchingText" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="QuestionId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="CourseProvider">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CourseId" Type="Guid" />
+          <Property Name="ProviderId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="Cours">
+          <Key>
+            <PropertyRef Name="CourseId" />
+          </Key>
+          <Property Name="CourseId" Type="Guid" Nullable="false" />
+          <Property Name="CourseName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CourseCreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="Updatedby" Type="Guid" />
+          <Property Name="CanvasId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CourseSchedule">
+          <Key>
+            <PropertyRef Name="ScheduleId" />
+          </Key>
+          <Property Name="ScheduleId" Type="Guid" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="CourseId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="CourseUniversity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CourseId" Type="Guid" />
+          <Property Name="UniversityId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="CourseUniversityLM">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+            <PropertyRef Name="CourseId" />
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="UniversityId" Type="Guid" Nullable="false" />
+          <Property Name="CourseId" Type="Guid" Nullable="false" />
+          <Property Name="ProviderId" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DiscussionDetail">
+          <Key>
+            <PropertyRef Name="DiscussionDetailId" />
+          </Key>
+          <Property Name="DiscussionDetailId" Type="Guid" Nullable="false" />
+          <Property Name="DiscussionComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DiscussionId" Type="Guid" />
+          <Property Name="EnteredBy" Type="Guid" />
+        </EntityType>
+        <EntityType Name="DisucssionMaster">
+          <Key>
+            <PropertyRef Name="DiscussionId" />
+          </Key>
+          <Property Name="DiscussionId" Type="Guid" Nullable="false" />
+          <Property Name="DiscussionSubject" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DiscussionDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Createdby" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="EmailRule">
+          <Key>
+            <PropertyRef Name="RuleId" />
+            <PropertyRef Name="EmailId" />
+          </Key>
+          <Property Name="RuleId" Type="Int32" Nullable="false" />
+          <Property Name="EmailId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FAQ">
+          <Key>
+            <PropertyRef Name="FAQId" />
+          </Key>
+          <Property Name="FAQId" Type="Guid" Nullable="false" />
+          <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CourseId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="KnowFaq">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CourseId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="KnownDiscussion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CourseId" Type="Guid" />
+        </EntityType>
+        <EntityType Name="LMSProvider">
+          <Key>
+            <PropertyRef Name="ProviderId" />
+          </Key>
+          <Property Name="ProviderId" Type="Guid" Nullable="false" />
+          <Property Name="ProviderName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProviderDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ProviderCreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Guid" />
+          <Property Name="Updatedby" Type="Guid" />
+        </EntityType>
+        <EntityType Name="PendingReply">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="ResponseContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DiscussionId" Type="Guid" />
+          <Property Name="isrepllied" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="Guid" Nullable="false" />
+          <Property Name="QuestionType" Type="Int32" />
+          <Property Name="QuestionDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StudentRegistration">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="CourseID" Type="Guid" Nullable="false" />
+          <Property Name="UniversityID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="120" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+          <Property Name="RegNo" Type="String" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNo" Type="Decimal" Precision="15" Scale="0" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SubDiscussionDetail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="SubDiscussionId" Type="Guid" />
+          <Property Name="SubDiscussionSubject" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SubDiscussionDetail1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SubDiscussionForumReply">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="DiscussionDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubKnownDiscussionId" Type="Guid" />
+          <Property Name="IsmainPost" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="SubDiscussionReply">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="SubDiscussionDetailId" Type="Guid" />
+          <Property Name="ReplyFrom" Type="String" MaxLength="700" FixedLength="false" Unicode="true" />
+          <Property Name="ReplyContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubKnowDiscussion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="DiscussionId" Type="Int32" Nullable="false" />
+          <Property Name="CourseId" Type="Guid" />
+          <Property Name="DiscussionURL" Type="String" MaxLength="600" FixedLength="false" Unicode="false" />
+          <Property Name="Originator" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsNewDiscussion" Type="Boolean" />
+          <Property Name="NumerOfReplies" Type="Int32" Nullable="false" />
+          <Property Name="LastPostedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsPostReplied" Type="Boolean" Nullable="false" />
+          <Property Name="SubTopic" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="University">
+          <Key>
+            <PropertyRef Name="UniversityId" />
+          </Key>
+          <Property Name="UniversityId" Type="Guid" Nullable="false" />
+          <Property Name="UniversityName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UniversityDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="LMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AutoResponderEmails" EntityType="Self.AutoResponderEmail" />
+          <EntitySet Name="AutoRespondingRules" EntityType="Self.AutoRespondingRule" />
+          <EntitySet Name="CourseProviders" EntityType="Self.CourseProvider" />
+          <EntitySet Name="Courses" EntityType="Self.Cours" />
+          <EntitySet Name="CourseSchedules" EntityType="Self.CourseSchedule" />
+          <EntitySet Name="CourseUniversities" EntityType="Self.CourseUniversity" />
+          <EntitySet Name="CourseUniversityLMS" EntityType="Self.CourseUniversityLM" />
+          <EntitySet Name="DiscussionDetails" EntityType="Self.DiscussionDetail" />
+          <EntitySet Name="DisucssionMasters" EntityType="Self.DisucssionMaster" />
+          <EntitySet Name="EmailRules" EntityType="Self.EmailRule" />
+          <EntitySet Name="FAQs" EntityType="Self.FAQ" />
+          <EntitySet Name="KnowFaqs" EntityType="Self.KnowFaq" />
+          <EntitySet Name="KnownDiscussions" EntityType="Self.KnownDiscussion" />
+          <EntitySet Name="LMSProviders" EntityType="Self.LMSProvider" />
+          <EntitySet Name="PendingReplies" EntityType="Self.PendingReply" />
+          <EntitySet Name="Questions" EntityType="Self.Question" />
+          <EntitySet Name="StudentRegistrations" EntityType="Self.StudentRegistration" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="SubDiscussionDetails" EntityType="Self.SubDiscussionDetail" />
+          <EntitySet Name="SubDiscussionForumReplies" EntityType="Self.SubDiscussionForumReply" />
+          <EntitySet Name="SubDiscussionReplies" EntityType="Self.SubDiscussionReply" />
+          <EntitySet Name="SubKnowDiscussions" EntityType="Self.SubKnowDiscussion" />
+          <EntitySet Name="Universities" EntityType="Self.University" />
+          <FunctionImport Name="AddCourse">
+            <Parameter Name="CourseName" Mode="In" Type="String" />
+            <Parameter Name="CourseDescription" Mode="In" Type="String" />
+            <Parameter Name="Createdby" Mode="In" Type="Guid" />
+            <Parameter Name="Updatedby" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="GetCourse" ReturnType="Collection(LMS.Models.GetCourse_Result)" />
+          <FunctionImport Name="GetDiscussion" ReturnType="Collection(LMS.Models.GetDiscussion_Result)">
+          <Parameter Name="isAll" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GetFaq" ReturnType="Collection(LMS.Models.GetFaq_Result)">
+          <Parameter Name="isAll" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GetStudentCourse" ReturnType="Collection(LMS.Models.GetStudentCourse_Result)">
+          <Parameter Name="UniversityId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetStudentUniversity" ReturnType="Collection(LMS.Models.GetStudentUniversity_Result)">
+          <Parameter Name="CourseId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <EntitySet Name="CanvasRespondRuleQuestions" EntityType="LMS.Models.CanvasRespondRuleQuestion" />
+          <EntitySet Name="FAQEmails" EntityType="LMS.Models.FAQEmail" />
+          <EntitySet Name="FAQEmailsDownloads" EntityType="LMS.Models.FAQEmailsDownload" />
+          <EntitySet Name="SmtpPopSettings" EntityType="LMS.Models.SmtpPopSetting" />
+          <EntitySet Name="AnsweredFAQs" EntityType="LMS.Models.AnsweredFAQ" />
+          <EntitySet Name="UnAnsweredFAQs" EntityType="LMS.Models.UnAnsweredFAQ" />
+          <EntitySet Name="CanvasRespondRules" EntityType="LMS.Models.CanvasRespondRule" />
+        </EntityContainer>
+        <ComplexType Name="GetCourse_Result">
+          <Property Type="Guid" Name="CourseId" Nullable="false" />
+          <Property Type="String" Name="CourseName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="CourseDescription" Nullable="true" />
+          <Property Type="DateTime" Name="CourseCreateDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="StartDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CourseProvider" Nullable="true" />
+          <Property Type="String" Name="CourseUniversity" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetDiscussion_Result">
+          <Property Type="Guid" Name="Createdby" Nullable="true" />
+          <Property Type="DateTime" Name="CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="DiscussionDetails" Nullable="true" />
+          <Property Type="Guid" Name="DiscussionId" Nullable="false" />
+          <Property Type="String" Name="DiscussionSubject" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetFaq_Result">
+          <Property Type="Guid" Name="FAQId" Nullable="false" />
+          <Property Type="String" Name="Question" Nullable="true" />
+          <Property Type="Guid" Name="CourseId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetStudentCourse_Result">
+          <Property Type="Int32" Name="NoOfStudent" Nullable="true" />
+          <Property Type="String" Name="CourseName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetStudentUniversity_Result">
+          <Property Type="Int32" Name="NoOfStudent" Nullable="true" />
+          <Property Type="String" Name="UniversityName" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="CanvasRespondRuleQuestion">
+          <Key>
+            <PropertyRef Name="CanvasQuestionId" />
+          </Key>
+          <Property Name="CanvasQuestionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CanvasRuleId" Type="Int32" Nullable="false" />
+          <Property Name="MatchType" Type="Byte" />
+          <Property Name="CanvasQuestion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="FAQEmail">
+          <Key>
+            <PropertyRef Name="faq_email_id" />
+          </Key>
+          <Property Name="faq_email_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="smtp_pop_id" Type="Int32" Nullable="false" />
+          <Property Name="user_name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="use_password" Type="String" Nullable="false" MaxLength="160" FixedLength="false" Unicode="true" />
+          <Property Name="active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="FAQEmailsDownload">
+          <Key>
+            <PropertyRef Name="faq_email_download_id" />
+          </Key>
+          <Property Name="faq_email_download_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="faq_email_id" Type="Int32" Nullable="false" />
+          <Property Name="email_uid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="download_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="SmtpPopSetting">
+          <Key>
+            <PropertyRef Name="smtp_pop_id" />
+          </Key>
+          <Property Name="smtp_pop_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="setting_name" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="smtp_server" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="smpt_port" Type="Int32" Nullable="false" />
+          <Property Name="smtp_use_ssl" Type="Boolean" Nullable="false" />
+          <Property Name="pop_server" Type="String" Nullable="false" MaxLength="80" FixedLength="false" Unicode="true" />
+          <Property Name="pop_port" Type="Int32" Nullable="false" />
+          <Property Name="pop_use_ssl" Type="Boolean" Nullable="false" />
+          <Property Name="active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="AnsweredFAQ">
+          <Key>
+            <PropertyRef Name="faq_answered_id" />
+          </Key>
+          <Property Name="faq_answered_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="faq_email_id" Type="Int32" />
+          <Property Name="faq" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="answer_date_time" Type="DateTime" Precision="3" />
+          <Property Name="answer_replied_with" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="canvas_rule_id" Type="Int32" />
+        </EntityType>
+        <EntityType Name="UnAnsweredFAQ">
+          <Key>
+            <PropertyRef Name="unanswered_faq_id" />
+          </Key>
+          <Property Name="unanswered_faq_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="faq" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="faq_answered_id" Type="Int32" />
+          <Property Name="faq_answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="faq_email_id" Type="Int32" />
+          <Property Name="to_email_address" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="faq_email_subject" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CanvasRespondRule">
+          <Key>
+            <PropertyRef Name="CanvasRuleId" />
+          </Key>
+          <Property Name="CanvasRuleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CanvasRuleForId" Type="Byte" />
+          <Property Name="CanvasRuleTitle" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CanvasAnswer" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LMSModelsStoreContainer" CdmEntityContainer="LMSEntities">
+          <EntitySetMapping Name="AutoResponderEmails">
+            <EntityTypeMapping TypeName="LMS.Models.AutoResponderEmail">
+              <MappingFragment StoreEntitySet="AutoResponderEmail">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmailSubject" ColumnName="EmailSubject" />
+                <ScalarProperty Name="EmailBody" ColumnName="EmailBody" />
+                <ScalarProperty Name="IsDraft" ColumnName="IsDraft" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AutoRespondingRules">
+            <EntityTypeMapping TypeName="LMS.Models.AutoRespondingRule">
+              <MappingFragment StoreEntitySet="AutoRespondingRules">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="TextType" ColumnName="TextType" />
+                <ScalarProperty Name="ConditionType" ColumnName="ConditionType" />
+                <ScalarProperty Name="MatchingText" ColumnName="MatchingText" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseProviders">
+            <EntityTypeMapping TypeName="LMS.Models.CourseProvider">
+              <MappingFragment StoreEntitySet="CourseProvider">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="LMS.Models.Cours">
+              <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="CourseDescription" ColumnName="CourseDescription" />
+                <ScalarProperty Name="CourseCreateDate" ColumnName="CourseCreateDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updatedby" ColumnName="Updatedby" />
+                <ScalarProperty Name="CanvasId" ColumnName="CanvasId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseSchedules">
+            <EntityTypeMapping TypeName="LMS.Models.CourseSchedule">
+              <MappingFragment StoreEntitySet="CourseSchedule">
+                <ScalarProperty Name="ScheduleId" ColumnName="ScheduleId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseUniversities">
+            <EntityTypeMapping TypeName="LMS.Models.CourseUniversity">
+              <MappingFragment StoreEntitySet="CourseUniversity">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CourseUniversityLMS">
+            <EntityTypeMapping TypeName="LMS.Models.CourseUniversityLM">
+              <MappingFragment StoreEntitySet="CourseUniversityLMS">
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DiscussionDetails">
+            <EntityTypeMapping TypeName="LMS.Models.DiscussionDetail">
+              <MappingFragment StoreEntitySet="DiscussionDetail">
+                <ScalarProperty Name="DiscussionDetailId" ColumnName="DiscussionDetailId" />
+                <ScalarProperty Name="DiscussionComments" ColumnName="DiscussionComments" />
+                <ScalarProperty Name="DiscussionId" ColumnName="DiscussionId" />
+                <ScalarProperty Name="EnteredBy" ColumnName="EnteredBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DisucssionMasters">
+            <EntityTypeMapping TypeName="LMS.Models.DisucssionMaster">
+              <MappingFragment StoreEntitySet="DisucssionMaster">
+                <ScalarProperty Name="DiscussionId" ColumnName="DiscussionId" />
+                <ScalarProperty Name="DiscussionSubject" ColumnName="DiscussionSubject" />
+                <ScalarProperty Name="DiscussionDetails" ColumnName="DiscussionDetails" />
+                <ScalarProperty Name="Createdby" ColumnName="Createdby" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailRules">
+            <EntityTypeMapping TypeName="LMS.Models.EmailRule">
+              <MappingFragment StoreEntitySet="EmailRules">
+                <ScalarProperty Name="RuleId" ColumnName="RuleId" />
+                <ScalarProperty Name="EmailId" ColumnName="EmailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAQs">
+            <EntityTypeMapping TypeName="LMS.Models.FAQ">
+              <MappingFragment StoreEntitySet="FAQ">
+                <ScalarProperty Name="FAQId" ColumnName="FAQId" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KnowFaqs">
+            <EntityTypeMapping TypeName="LMS.Models.KnowFaq">
+              <MappingFragment StoreEntitySet="KnowFaqs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KnownDiscussions">
+            <EntityTypeMapping TypeName="LMS.Models.KnownDiscussion">
+              <MappingFragment StoreEntitySet="KnownDiscussion">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LMSProviders">
+            <EntityTypeMapping TypeName="LMS.Models.LMSProvider">
+              <MappingFragment StoreEntitySet="LMSProvider">
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="ProviderName" ColumnName="ProviderName" />
+                <ScalarProperty Name="ProviderDescription" ColumnName="ProviderDescription" />
+                <ScalarProperty Name="ProviderCreateDate" ColumnName="ProviderCreateDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updatedby" ColumnName="Updatedby" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PendingReplies">
+            <EntityTypeMapping TypeName="LMS.Models.PendingReply">
+              <MappingFragment StoreEntitySet="PendingReplies">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResponseContent" ColumnName="ResponseContent" />
+                <ScalarProperty Name="DiscussionId" ColumnName="DiscussionId" />
+                <ScalarProperty Name="isrepllied" ColumnName="isrepllied" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="LMS.Models.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="QuestionType" ColumnName="QuestionType" />
+                <ScalarProperty Name="QuestionDesc" ColumnName="QuestionDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentRegistrations">
+            <EntityTypeMapping TypeName="LMS.Models.StudentRegistration">
+              <MappingFragment StoreEntitySet="StudentRegistration">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="UniversityID" ColumnName="UniversityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="LMS.Models.Student">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="RegNo" ColumnName="RegNo" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubDiscussionDetails">
+            <EntityTypeMapping TypeName="LMS.Models.SubDiscussionDetail">
+              <MappingFragment StoreEntitySet="SubDiscussionDetails">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="SubDiscussionId" ColumnName="SubDiscussionId" />
+                <ScalarProperty Name="SubDiscussionSubject" ColumnName="SubDiscussionSubject" />
+                <ScalarProperty Name="SubDiscussionDetail1" ColumnName="SubDiscussionDetail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubDiscussionForumReplies">
+            <EntityTypeMapping TypeName="LMS.Models.SubDiscussionForumReply">
+              <MappingFragment StoreEntitySet="SubDiscussionForumReplies">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="DiscussionDetails" ColumnName="DiscussionDetails" />
+                <ScalarProperty Name="SubKnownDiscussionId" ColumnName="SubKnownDiscussionId" />
+                <ScalarProperty Name="IsmainPost" ColumnName="IsmainPost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubDiscussionReplies">
+            <EntityTypeMapping TypeName="LMS.Models.SubDiscussionReply">
+              <MappingFragment StoreEntitySet="SubDiscussionReplies">
+                <ScalarProperty Name="SubDiscussionDetailId" ColumnName="SubDiscussionDetailId" />
+                <ScalarProperty Name="ReplyFrom" ColumnName="ReplyFrom" />
+                <ScalarProperty Name="ReplyContent" ColumnName="ReplyContent" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubKnowDiscussions">
+            <EntityTypeMapping TypeName="LMS.Models.SubKnowDiscussion">
+              <MappingFragment StoreEntitySet="SubKnowDiscussions">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DiscussionId" ColumnName="DiscussionId" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="DiscussionURL" ColumnName="DiscussionURL" />
+                <ScalarProperty Name="Originator" ColumnName="Originator" />
+                <ScalarProperty Name="IsNewDiscussion" ColumnName="IsNewDiscussion" />
+                <ScalarProperty Name="NumerOfReplies" ColumnName="NumerOfReplies" />
+                <ScalarProperty Name="LastPostedBy" ColumnName="LastPostedBy" />
+                <ScalarProperty Name="IsPostReplied" ColumnName="IsPostReplied" />
+                <ScalarProperty Name="SubTopic" ColumnName="SubTopic" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Universities">
+            <EntityTypeMapping TypeName="LMS.Models.University">
+              <MappingFragment StoreEntitySet="University">
+                <ScalarProperty Name="UniversityId" ColumnName="UniversityId" />
+                <ScalarProperty Name="UniversityName" ColumnName="UniversityName" />
+                <ScalarProperty Name="UniversityDescription" ColumnName="UniversityDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AddCourse" FunctionName="LMS.Models.Store.AddCourse" />
+          <FunctionImportMapping FunctionImportName="GetCourse" FunctionName="LMS.Models.Store.GetCourse">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LMS.Models.GetCourse_Result">
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+                <ScalarProperty Name="CourseDescription" ColumnName="CourseDescription" />
+                <ScalarProperty Name="CourseCreateDate" ColumnName="CourseCreateDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="CourseProvider" ColumnName="CourseProvider" />
+                <ScalarProperty Name="CourseUniversity" ColumnName="CourseUniversity" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDiscussion" FunctionName="LMS.Models.Store.GetDiscussion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LMS.Models.GetDiscussion_Result">
+                <ScalarProperty Name="Createdby" ColumnName="Createdby" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="DiscussionDetails" ColumnName="DiscussionDetails" />
+                <ScalarProperty Name="DiscussionId" ColumnName="DiscussionId" />
+                <ScalarProperty Name="DiscussionSubject" ColumnName="DiscussionSubject" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFaq" FunctionName="LMS.Models.Store.GetFaq">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LMS.Models.GetFaq_Result">
+                <ScalarProperty Name="FAQId" ColumnName="FAQId" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="CourseId" ColumnName="CourseId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetStudentCourse" FunctionName="LMS.Models.Store.GetStudentCourse">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LMS.Models.GetStudentCourse_Result">
+                <ScalarProperty Name="NoOfStudent" ColumnName="NoOfStudent" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetStudentUniversity" FunctionName="LMS.Models.Store.GetStudentUniversity">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LMS.Models.GetStudentUniversity_Result">
+                <ScalarProperty Name="NoOfStudent" ColumnName="NoOfStudent" />
+                <ScalarProperty Name="UniversityName" ColumnName="UniversityName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CanvasRespondRuleQuestions">
+            <EntityTypeMapping TypeName="LMS.Models.CanvasRespondRuleQuestion">
+              <MappingFragment StoreEntitySet="CanvasRespondRuleQuestions">
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CanvasQuestion" ColumnName="CanvasQuestion" />
+                <ScalarProperty Name="MatchType" ColumnName="MatchType" />
+                <ScalarProperty Name="CanvasRuleId" ColumnName="CanvasRuleId" />
+                <ScalarProperty Name="CanvasQuestionId" ColumnName="CanvasQuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAQEmails">
+            <EntityTypeMapping TypeName="LMS.Models.FAQEmail">
+              <MappingFragment StoreEntitySet="FAQEmails">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="use_password" ColumnName="use_password" />
+                <ScalarProperty Name="user_name" ColumnName="user_name" />
+                <ScalarProperty Name="smtp_pop_id" ColumnName="smtp_pop_id" />
+                <ScalarProperty Name="faq_email_id" ColumnName="faq_email_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAQEmailsDownloads">
+            <EntityTypeMapping TypeName="LMS.Models.FAQEmailsDownload">
+              <MappingFragment StoreEntitySet="FAQEmailsDownload">
+                <ScalarProperty Name="download_date" ColumnName="download_date" />
+                <ScalarProperty Name="email_uid" ColumnName="email_uid" />
+                <ScalarProperty Name="faq_email_id" ColumnName="faq_email_id" />
+                <ScalarProperty Name="faq_email_download_id" ColumnName="faq_email_download_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SmtpPopSettings">
+            <EntityTypeMapping TypeName="LMS.Models.SmtpPopSetting">
+              <MappingFragment StoreEntitySet="SmtpPopSettings">
+                <ScalarProperty Name="active" ColumnName="active" />
+                <ScalarProperty Name="pop_use_ssl" ColumnName="pop_use_ssl" />
+                <ScalarProperty Name="pop_port" ColumnName="pop_port" />
+                <ScalarProperty Name="pop_server" ColumnName="pop_server" />
+                <ScalarProperty Name="smtp_use_ssl" ColumnName="smtp_use_ssl" />
+                <ScalarProperty Name="smpt_port" ColumnName="smpt_port" />
+                <ScalarProperty Name="smtp_server" ColumnName="smtp_server" />
+                <ScalarProperty Name="setting_name" ColumnName="setting_name" />
+                <ScalarProperty Name="smtp_pop_id" ColumnName="smtp_pop_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AnsweredFAQs">
+            <EntityTypeMapping TypeName="LMS.Models.AnsweredFAQ">
+              <MappingFragment StoreEntitySet="AnsweredFAQs">
+                <ScalarProperty Name="canvas_rule_id" ColumnName="canvas_rule_id" />
+                <ScalarProperty Name="answer_replied_with" ColumnName="answer_replied_with" />
+                <ScalarProperty Name="answer_date_time" ColumnName="answer_date_time" />
+                <ScalarProperty Name="faq" ColumnName="faq" />
+                <ScalarProperty Name="faq_email_id" ColumnName="faq_email_id" />
+                <ScalarProperty Name="faq_answered_id" ColumnName="faq_answered_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UnAnsweredFAQs">
+            <EntityTypeMapping TypeName="LMS.Models.UnAnsweredFAQ">
+              <MappingFragment StoreEntitySet="UnAnsweredFAQs">
+                <ScalarProperty Name="faq_email_subject" ColumnName="faq_email_subject" />
+                <ScalarProperty Name="to_email_address" ColumnName="to_email_address" />
+                <ScalarProperty Name="faq_email_id" ColumnName="faq_email_id" />
+                <ScalarProperty Name="faq_answer" ColumnName="faq_answer" />
+                <ScalarProperty Name="faq_answered_id" ColumnName="faq_answered_id" />
+                <ScalarProperty Name="faq" ColumnName="faq" />
+                <ScalarProperty Name="unanswered_faq_id" ColumnName="unanswered_faq_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CanvasRespondRules">
+            <EntityTypeMapping TypeName="LMS.Models.CanvasRespondRule">
+              <MappingFragment StoreEntitySet="CanvasRespondRules">
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CanvasAnswer" ColumnName="CanvasAnswer" />
+                <ScalarProperty Name="CanvasRuleTitle" ColumnName="CanvasRuleTitle" />
+                <ScalarProperty Name="CanvasRuleForId" ColumnName="CanvasRuleForId" />
+                <ScalarProperty Name="CanvasRuleId" ColumnName="CanvasRuleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,221 @@
+﻿@model LMS.Areas.Canvas.Models.CanvasCourseDetailModel
+
+@{
+    string sTitle = "Create";
+    if(Model != null && Model.CourseId != null && Model.CourseId != new Guid())
+    {
+        sTitle = "Update";
+    }
+    ViewBag.Title = sTitle;
+}
+<h2>@ViewBag.Title</h2>
+@if (Model != null)
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Course</h4>
+            <hr />
+            @*<input type="hidden" name="CourseId" value="@Model.CourseId" />*@
+            @Html.HiddenFor(m => m.CourseId)
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.CourseName, "Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CourseName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CourseName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CourseDescription, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CourseDescription, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CourseDescription, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    Provider
+                </label>
+                <div class="col-md-10">
+                    <table class=" table table-responsive table-hover selected-providers">
+                        @if(Model.Providers != null)
+                        {
+                            foreach(var aProvider in Model.Providers)
+                            {
+                                var chk = string.Empty;
+                                <tr>
+                                    <td>
+                                        @if(Model.SelectedProviders != null && Model.SelectedProviders.Count > 0)
+                                        {
+                                            //Guid? providerId = (from sp in Model.SelectedProviders
+                                            //                    where (sp != null) && (sp == aProvider.ProviderId)
+                                            //                    select sp)
+                                            //                   .FirstOrDefault();
+                                            //if(providerId != null && providerId != new Guid())
+                                            //{
+                                            //    chk = "checked='checked'";
+                                            //}
+                                            if(Model.SelectedProviders.Contains(aProvider.ProviderId))
+                                            {
+                                                chk = "checked='checked'";
+                                            }
+                                        }
+
+                                        <div class="checkbox checkbox-slider-md checkbox-slider--b checkbox-slider-success">
+                                            <label>
+                                                <input type="checkbox" @chk value="@aProvider.ProviderId" name="ProviderId" /><span></span>
+                                                @aProvider.ProviderName
+                                            </label>
+                                        </div>
+                                        
+                                    </td>
+                                    
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    Universities
+                </label>
+                <div class="col-md-10">
+                    <table class=" table table-responsive table-hover selected-universities">
+                        @if (Model.Universities != null)
+                        {
+                            foreach (var aUniversity in Model.Universities)
+                            {
+                                var chk = string.Empty;
+                                <tr>
+                                    <td>
+                                        @if (Model.SelectedUniversities != null && Model.SelectedUniversities.Count > 0)
+                                        {
+                                            Guid? universityId = (from su in Model.SelectedUniversities
+                                                                where (su != null) && (su == aUniversity.UniversityId)
+                                                                select su)
+                                                               .FirstOrDefault();
+                                            if (universityId != null && universityId != new Guid())
+                                            {
+                                                chk = "checked='checked'";
+                                            }
+                                        }
+
+                                        <div class="checkbox checkbox-slider-md checkbox-slider--b checkbox-slider-success">
+                                            <label>
+                                                <input type="checkbox" @chk value="@aUniversity.UniversityId" name="UniversityId" /><span></span>
+                                                @aUniversity.UniversityName
+                                            </label>
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            </div>
+            @{ 
+                string sStartDate = string.Empty;
+                string sEndDate = string.Empty;
+                if(Model.StartDate != null)
+                {
+                    sStartDate = Model.StartDate.Value.ToString(Constants.DATE_FORMAT);
+                }
+                if(Model.EndDate != null)
+                {
+                    sEndDate = Model.EndDate.Value.ToString(Constants.DATE_FORMAT);
+                }
+            }
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Start Date
+                </label>
+                <div class="col-md-10">
+                    <input class="form-control date-future" value="@sStartDate" data-end-date-id="EndDate" readonly name="StartDate" id="StartDate" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    End Date
+                </label>
+                <div class="col-md-10">
+                    <input class="form-control date-future" readonly value="@sEndDate" name="EndDate" id="EndDate" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="@sTitle" class="btn btn-success save-course" />
+                    @Html.ActionLink("Close", "Index", null, new { @class = "btn btn-warning" })
+                </div>
+            </div>
+        </div>
+    }
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+
+    $('.save-course').click(function (e) {
+        var btn = $(this);
+        var frm = $(btn).parents('form:first');
+        if ($(frm).valid())
+        {
+            var courseDetail = {
+                CourseId: $('#@Html.IdFor(m => m.CourseId)').val()
+                , CourseName: $('#@Html.IdFor(m => m.CourseName)').val()
+                , CourseDescription: $('#@Html.IdFor(m => m.CourseDescription)').val()
+            }
+
+            courseDetail.SelectedProviders = [];
+            $('.selected-providers').find(':checkbox').each(function (index, val) {
+                var chk = $(this);
+                if($(chk).is(':checked'))
+                {
+                    courseDetail.SelectedProviders.push($(chk).val());
+                }
+            })
+
+            courseDetail.SelectedUniversities = [];
+            $('.selected-universities').find(':checkbox').each(function (index, val) {
+                var chk = $(this);
+                if ($(chk).is(':checked')) {
+                    courseDetail.SelectedUniversities.push($(chk).val());
+                }
+            })
+
+            courseDetail.StartDate = $('#StartDate').val();
+            courseDetail.EndDate = $('#EndDate').val();
+            courseDetail.__RequestVerificationToken = $('[name=__RequestVerificationToken]').val();
+
+            var json = JSON.stringify(courseDetail);
+
+            var options = {
+                url: '@Url.Action("SaveCourseDetail", "Course")'
+                , data: courseDetail
+                , type: 'POST'
+                , async: false
+            }
+            $.ajax(options)
+                .success(function (data) {
+                    //alert('Success');
+                    var json = JSON.parse(data);
+                    if (json.Success == true)
+                    {
+                        window.location.href = '@Url.Action("Index", "Course")'
+                    }
+                    else
+                    {
+                        alert(json.Message);
+                    }
+                })
+        }
+        e.preventDefault();
+    })
+</script>
+

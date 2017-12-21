@@ -1,0 +1,141 @@
+﻿@model LMS.Models.Courses.Add
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Course</h4>
+        <hr />
+        <input type="hidden" name="CourseId" value="@Model.CourseId" />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseName, "Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CourseName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CourseName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CourseDescription, "Description", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CourseDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CourseDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Provider
+            </label>
+            <div class="col-md-10">
+                <table class=" table table-responsive table-hover">
+                    @if (ViewBag.Provider != null)
+                    {
+                        foreach (var item in ViewBag.Provider)
+                        {
+                            var chk = "";
+                            if (ViewBag.SelectProvideId != null)
+                            {
+                                foreach (var select in ViewBag.SelectProvideId)
+                                {
+                                    if (select.ProviderId == item.ProviderId)
+                                    {
+                                        chk = "checked='checked'";
+                                        break;
+                                    }
+                                }
+                            }
+                            <tr>
+                                <td>
+                                    <div class="checkbox checkbox-slider-md checkbox-slider--b checkbox-slider-success">
+                                        <label>
+
+                                            <input type="checkbox" @chk value="@item.ProviderId" name="ProviderId" /><span></span>
+                                            @item.ProviderName
+                                        </label>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                Universities
+            </label>
+            <div class="col-md-10">
+                <table class=" table table-responsive table-hover">
+                    @if (ViewBag.University != null)
+                    {
+                        foreach (var item in ViewBag.University)
+                        {
+                            var chk = "";
+                            if (ViewBag.SelectUniversityId != null)
+                            {
+                                foreach (var select in ViewBag.SelectUniversityId)
+                                {
+                                    if (select.UniversityId == item.UniversityId)
+                                    {
+                                        chk = "checked='checked'";
+                                        break;
+                                    }
+                                }
+                            }
+                            <tr>
+                                <td>
+                                    <div class="checkbox checkbox-slider-md checkbox-slider--b checkbox-slider-success">
+                                        <label>
+                                            <input type="checkbox" @chk value="@item.UniversityId" name="UniversityId" /><span></span>
+                                            @item.UniversityName
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Start Date
+            </label>
+            <div class="col-md-10">
+                <input class="form-control date-future" value="@(ViewBag.CourseSchedule != null?ViewBag.CourseSchedule.StartDate:"") " data-end-date-id="EndDate" readonly name="StartDate" id="StartDate" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                End Date
+            </label>
+            <div class="col-md-10">
+                <input class="form-control date-future" readonly value="@(ViewBag.CourseSchedule != null?ViewBag.CourseSchedule.EndDate:"")" name="EndDate" id="EndDate" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-success" />
+                @Html.ActionLink("Close", "Index", null, new { @class = "btn btn-warning" })
+            </div>
+        </div>
+    </div>
+}
+
